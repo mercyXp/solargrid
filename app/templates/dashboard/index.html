@@ -12,7 +12,7 @@
     <div class="col-6 col-md-4 col-xl-3"><div class="card kpi-card"><div class="kpi-value">{{ kpis.open_service_requests }}</div><div class="kpi-label">Open Service Requests</div></div></div>
     <div class="col-6 col-md-4 col-xl-3"><div class="card kpi-card"><div class="kpi-value">{{ kpis.active_warranties }}</div><div class="kpi-label">Active Warranties</div></div></div>
     <div class="col-6 col-md-4 col-xl-3"><div class="card kpi-card"><div class="kpi-value">{{ kpis.outstanding_invoices }}</div><div class="kpi-label">Outstanding Invoices</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="card kpi-card"><div class="kpi-value text-success">R{{ '%.0f'|format(kpis.total_revenue|float) }}</div><div class="kpi-label">Total Revenue</div></div></div>
+    <div class="col-6 col-md-4 col-xl-3"><div class="card kpi-card"><div class="kpi-value text-success">{{ kpis.total_revenue|kwacha(0) }}</div><div class="kpi-label">Total Revenue</div></div></div>
 </div>
 
 <div class="row g-4 mb-4">
@@ -40,21 +40,31 @@
             <h6 class="small fw-semibold mt-3">Service Requests</h6>
             {% for sr in recent_services %}<div class="small mb-1">#{{ sr.request_id }} {{ status_badge(sr.priority) }}</div>{% endfor %}
             <h6 class="small fw-semibold mt-3">Payments</h6>
-            {% for p in recent_payments %}<div class="small mb-1">R{{ p.amount }} — {{ p.invoice.invoice_number }}</div>{% endfor %}
+            {% for p in recent_payments %}<div class="small mb-1">{{ p.amount|kwacha }} — {{ p.invoice.invoice_number }}</div>{% endfor %}
         </div></div>
     </div>
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
-const yellow = '#F4C430', green = '#2E7D32', blue = '#1976D2', red = '#D32F2F';
+const chartColors = {
+    yellow: '#F4C430',
+    green: '#2E7D32',
+    blue: '#1976D2',
+    red: '#D32F2F',
+    purple: '#7B1FA2',
+    maroon: '#800020',
+    gray: '#6C757D'
+};
+const palette = [chartColors.yellow, chartColors.green, chartColors.blue, chartColors.purple, chartColors.maroon, chartColors.red];
+
 new Chart(document.getElementById('revenueChart'), {
     type: 'bar',
     data: {
         labels: {{ charts.monthly_revenue|map(attribute='period')|list|tojson }},
         datasets: [
-            { label: 'Invoiced', data: {{ charts.monthly_revenue|map(attribute='total_invoiced')|map('float')|list|tojson }}, backgroundColor: yellow },
-            { label: 'Paid', data: {{ charts.monthly_revenue|map(attribute='total_paid')|map('float')|list|tojson }}, backgroundColor: green }
+            { label: 'Invoiced', data: {{ charts.monthly_revenue|map(attribute='total_invoiced')|map('float')|list|tojson }}, backgroundColor: chartColors.yellow },
+            { label: 'Paid', data: {{ charts.monthly_revenue|map(attribute='total_paid')|map('float')|list|tojson }}, backgroundColor: chartColors.green }
         ]
     },
     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
@@ -63,7 +73,7 @@ new Chart(document.getElementById('installationChart'), {
     type: 'doughnut',
     data: {
         labels: {{ charts.installation_status|map(attribute=0)|list|tojson }},
-        datasets: [{ data: {{ charts.installation_status|map(attribute=1)|list|tojson }}, backgroundColor: [yellow, blue, green, red] }]
+        datasets: [{ data: {{ charts.installation_status|map(attribute=1)|list|tojson }}, backgroundColor: [chartColors.yellow, chartColors.blue, chartColors.green, chartColors.maroon, chartColors.purple] }]
     },
     options: { responsive: true, maintainAspectRatio: false }
 });
@@ -71,7 +81,7 @@ new Chart(document.getElementById('priorityChart'), {
     type: 'bar',
     data: {
         labels: {{ charts.service_priority|map(attribute=0)|list|tojson }},
-        datasets: [{ data: {{ charts.service_priority|map(attribute=1)|list|tojson }}, backgroundColor: [green, yellow, blue, red] }]
+        datasets: [{ data: {{ charts.service_priority|map(attribute=1)|list|tojson }}, backgroundColor: [chartColors.green, chartColors.yellow, chartColors.blue, chartColors.maroon] }]
     },
     options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
 });
@@ -79,7 +89,7 @@ new Chart(document.getElementById('equipmentChart'), {
     type: 'pie',
     data: {
         labels: {{ charts.equipment_status|map(attribute=0)|list|tojson }},
-        datasets: [{ data: {{ charts.equipment_status|map(attribute=1)|list|tojson }}, backgroundColor: [green, yellow, blue, red, '#6C757D'] }]
+        datasets: [{ data: {{ charts.equipment_status|map(attribute=1)|list|tojson }}, backgroundColor: [chartColors.green, chartColors.yellow, chartColors.blue, chartColors.purple, chartColors.maroon] }]
     },
     options: { responsive: true, maintainAspectRatio: false }
 });

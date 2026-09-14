@@ -25,7 +25,7 @@ class InvoiceForm(FlaskForm):
     request_id = SelectField("Service Request (optional)", coerce=int, validators=[Optional()])
     date_issued = DateField("Date Issued", validators=[DataRequired()], default=date.today)
     due_date = DateField("Due Date", validators=[DataRequired()])
-    total_amount = DecimalField("Total Amount (ZAR)", validators=[DataRequired()], places=2)
+    total_amount = DecimalField("Total Amount (ZMK)", validators=[DataRequired()], places=2)
     status = SelectField(
         "Status",
         choices=[("Draft", "Draft"), ("Issued", "Issued")],

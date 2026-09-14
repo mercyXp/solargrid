@@ -17,7 +17,7 @@
         <td><a href="{{ url_for('invoices.detail', invoice_id=p.invoice.invoice_id) }}">{{ p.invoice.invoice_number }}</a></td>
         <td>{{ p.invoice.customer.full_name }}</td>
         <td>{{ p.payment_date.strftime('%Y-%m-%d %H:%M') if p.payment_date else '—' }}</td>
-        <td>R{{ '%.2f'|format(p.amount|float) }}</td>
+        <td>{{ p.amount|kwacha }}</td>
         <td>{{ p.payment_method }}</td>
         <td>{{ p.reference_number or '—' }}</td>
     </tr>

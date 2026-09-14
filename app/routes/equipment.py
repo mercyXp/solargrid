@@ -34,7 +34,7 @@ class EquipmentTypeForm(FlaskForm):
     model_name = StringField("Model Name", validators=[DataRequired(), Length(max=100)])
     model_number = StringField("Model Number", validators=[Optional(), Length(max=50)])
     specifications = TextAreaField("Specifications", validators=[Optional()])
-    unit_price = DecimalField("Unit Price (ZAR)", validators=[DataRequired()], places=2)
+    unit_price = DecimalField("Unit Price (ZMK)", validators=[DataRequired()], places=2)
     default_warranty_months = StringField("Default Warranty (months)", validators=[DataRequired()])
     submit = SubmitField("Save Equipment Type")
 

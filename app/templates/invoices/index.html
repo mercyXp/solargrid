@@ -31,8 +31,8 @@
         <td>{{ inv.customer.full_name }}</td>
         <td>{{ inv.date_issued }}</td>
         <td>{{ inv.due_date }}</td>
-        <td>R{{ '%.2f'|format(inv.total_amount|float) }}</td>
-        <td>R{{ '%.2f'|format(inv.amount_paid|float) }}</td>
+        <td>{{ inv.total_amount|kwacha }}</td>
+        <td>{{ inv.amount_paid|kwacha }}</td>
         <td>{{ status_badge(inv.status) }}</td>
         <td><a href="{{ url_for('invoices.detail', invoice_id=inv.invoice_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
     </tr>

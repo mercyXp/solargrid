@@ -2,7 +2,7 @@
 
 ## Business Scenario
 
-SolarGrid Energy Solutions installs and maintains solar power systems for households, schools, farms, and businesses in South Africa (ZAR). The system tracks customers, sites, equipment inventory, installations, warranties, technicians, service requests, maintenance, invoices, and payments.
+SolarGrid Energy Solutions installs and maintains solar power systems for households, schools, farms, and businesses in Zambia (ZMK). The system tracks customers, sites, equipment inventory, installations, warranties, technicians, service requests, maintenance, invoices, and payments.
 
 ## Actors / Roles
 
@@ -64,5 +64,5 @@ See `architecture.md` service layer documentation.
 
 - MySQL 8.x target RDBMS
 - Single-tenant deployment
-- South African geography and ZAR currency
+- Zambian geography and ZMK (Zambian Kwacha) currency
 - Staff and Technician remain separate entities

@@ -17,7 +17,7 @@
         <td>{{ t.manufacturer }}</td>
         <td>{{ t.model_name }}</td>
         <td>{{ t.model_number or '—' }}</td>
-        <td>R{{ '%.2f'|format(t.unit_price|float) }}</td>
+        <td>{{ t.unit_price|kwacha }}</td>
         <td>{{ t.default_warranty_months }} mo</td>
         <td>{% if t.is_active %}<span class="badge bg-success-custom">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
     </tr>

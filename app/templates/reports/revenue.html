@@ -19,9 +19,9 @@
     {% for row in results %}
     <tr>
         <td>{{ row.period }}</td>
-        <td>R{{ '%.2f'|format(row.total_invoiced|float) }}</td>
-        <td>R{{ '%.2f'|format(row.total_paid|float) }}</td>
-        <td>R{{ '%.2f'|format(row.outstanding|float) }}</td>
+        <td>{{ row.total_invoiced|kwacha }}</td>
+        <td>{{ row.total_paid|kwacha }}</td>
+        <td>{{ row.outstanding|kwacha }}</td>
     </tr>
     {% else %}
     <tr><td colspan="4" class="empty-state">No revenue data for the selected period.</td></tr>

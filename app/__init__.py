@@ -114,6 +114,11 @@ def _register_error_handlers(app):
 
 def _register_context_processors(app):
     from app.security.permissions import Permission, ROLE_PERMISSIONS, has_permission
+    from app.utils.currency import format_kwacha
+
+    @app.template_filter("kwacha")
+    def kwacha_filter(amount, decimals=2):
+        return format_kwacha(amount, decimals)
 
     @app.context_processor
     def inject_globals():
@@ -124,6 +129,7 @@ def _register_context_processors(app):
             "has_permission": lambda perm: has_permission(role, perm) if role else False,
             "Permission": Permission,
             "ROLE_PERMISSIONS": ROLE_PERMISSIONS,
+            "CURRENCY_CODE": "ZMK",
         }
 
 

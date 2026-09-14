@@ -21,7 +21,7 @@ class InvoiceService:
         min_amount = sum(Decimal(str(d.unit_price_at_install)) * d.quantity for d in details)
         if Decimal(str(total_amount)) < min_amount:
             raise InvoiceServiceError(
-                f"Invoice total must be at least R{min_amount:.2f} (installation equipment value)."
+                f"Invoice total must be at least ZMK {min_amount:,.2f} (installation equipment value)."
             )
 
     @staticmethod

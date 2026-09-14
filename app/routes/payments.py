@@ -19,7 +19,7 @@ payments_bp = Blueprint("payments", __name__, url_prefix="/payments")
 class PaymentForm(FlaskForm):
     invoice_id = SelectField("Invoice", coerce=int, validators=[DataRequired()])
     payment_date = DateTimeField("Payment Date", validators=[DataRequired()], default=datetime.utcnow)
-    amount = DecimalField("Amount (ZAR)", validators=[DataRequired()], places=2)
+    amount = DecimalField("Amount (ZMK)", validators=[DataRequired()], places=2)
     payment_method = SelectField(
         "Payment Method",
         choices=[
@@ -50,7 +50,7 @@ def index():
 def create():
     form = PaymentForm()
     form.invoice_id.choices = [
-        (inv.invoice_id, f"{inv.invoice_number} - R{inv.outstanding:.2f} outstanding")
+        (inv.invoice_id, f"{inv.invoice_number} - ZMK {inv.outstanding:,.2f} outstanding")
         for inv in Invoice.query.filter(Invoice.status.notin_(["Paid", "Cancelled"])).all()
     ]
     if form.validate_on_submit():

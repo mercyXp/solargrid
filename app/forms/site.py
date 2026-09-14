@@ -8,7 +8,22 @@ class SiteForm(FlaskForm):
     site_name = StringField("Site Name", validators=[DataRequired(), Length(max=100)])
     address = TextAreaField("Address", validators=[DataRequired(), Length(max=255)])
     city = StringField("City", validators=[DataRequired(), Length(max=50)])
-    province = StringField("Province", validators=[DataRequired(), Length(max=50)])
+    province = SelectField(
+        "Province",
+        choices=[
+            ("Central", "Central"),
+            ("Copperbelt", "Copperbelt"),
+            ("Eastern", "Eastern"),
+            ("Luapula", "Luapula"),
+            ("Lusaka", "Lusaka"),
+            ("Muchinga", "Muchinga"),
+            ("Northern", "Northern"),
+            ("North-Western", "North-Western"),
+            ("Southern", "Southern"),
+            ("Western", "Western"),
+        ],
+        validators=[DataRequired()],
+    )
     postal_code = StringField("Postal Code", validators=[Optional(), Length(max=10)])
     latitude = DecimalField("Latitude", validators=[Optional()], places=7)
     longitude = DecimalField("Longitude", validators=[Optional()], places=7)

@@ -13,8 +13,8 @@
         <td><a href="{{ url_for('invoices.detail', invoice_id=row.invoice.invoice_id) }}">{{ row.invoice.invoice_number }}</a></td>
         <td>{{ row.invoice.customer.full_name }}</td>
         <td>{{ row.invoice.due_date }}</td>
-        <td>R{{ '%.2f'|format(row.invoice.total_amount|float) }}</td>
-        <td>R{{ '%.2f'|format(row.outstanding|float) }}</td>
+        <td>{{ row.invoice.total_amount|kwacha }}</td>
+        <td>{{ row.outstanding|kwacha }}</td>
         <td>{{ status_badge(row.invoice.status) }}</td>
         <td>{{ row.ageing }}</td>
         <td>{% if row.days_overdue > 0 %}{{ row.days_overdue }}{% else %}—{% endif %}</td>

@@ -1,4 +1,4 @@
-"""Seed SolarGrid database with realistic sample data."""
+"""Seed SolarGrid database with realistic Zambian sample data."""
 import sys
 from datetime import date, datetime, timedelta
 from decimal import Decimal
@@ -29,14 +29,14 @@ def seed():
         db.create_all()
 
         staff_users = [
-            ("admin", "Administrator", "Admin", "User", "admin@solargrid.co.za"),
-            ("salesrep", "Sales Rep", "Sarah", "Mokoena", "sales@solargrid.co.za"),
-            ("opsmgr", "Operations Manager", "David", "Naidoo", "ops@solargrid.co.za"),
-            ("techstaff", "Technician", "James", "Pillay", "tech@solargrid.co.za"),
-            ("warehouse", "Warehouse Clerk", "Linda", "Botha", "warehouse@solargrid.co.za"),
-            ("customersvc", "Customer Service", "Nomsa", "Dlamini", "service@solargrid.co.za"),
-            ("finance", "Finance Officer", "Peter", "van Wyk", "finance@solargrid.co.za"),
-            ("auditor", "Auditor", "Grace", "Khumalo", "audit@solargrid.co.za"),
+            ("admin", "Administrator", "Admin", "Mwanza", "admin@solargrid.co.zm"),
+            ("salesrep", "Sales Rep", "Chanda", "Bwalya", "sales@solargrid.co.zm"),
+            ("opsmgr", "Operations Manager", "Mutale", "Zulu", "ops@solargrid.co.zm"),
+            ("techstaff", "Technician", "Emmanuel", "Phiri", "tech@solargrid.co.zm"),
+            ("warehouse", "Warehouse Clerk", "Linda", "Nyirenda", "warehouse@solargrid.co.zm"),
+            ("customersvc", "Customer Service", "Nomsa", "Sakala", "service@solargrid.co.zm"),
+            ("finance", "Finance Officer", "Peter", "Tembo", "finance@solargrid.co.zm"),
+            ("auditor", "Auditor", "Grace", "Lungu", "audit@solargrid.co.zm"),
         ]
         staff_map = {}
         for username, role, fn, ln, email in staff_users:
@@ -53,9 +53,9 @@ def seed():
         db.session.flush()
 
         customers_data = [
-            ("John", "Smith", None, "john@email.co.za", "0821234567", "12 Oak St, Cape Town", "Individual"),
-            ("Green", "Farms", "Green Farms Pty Ltd", "info@greenfarms.co.za", "0219876543", "Plot 45, Stellenbosch", "Business"),
-            ("Western", "Cape School", "WC Education Dept", "admin@wcschool.gov.za", "0215551234", "1 School Rd, Paarl", "Government"),
+            ("Joseph", "Banda", None, "joseph.banda@email.co.zm", "0977123456", "Plot 234, Kabulonga, Lusaka", "Individual"),
+            ("Mwamba", "Farms", "Mwamba Farms Ltd", "info@mwambafarms.co.zm", "0966789012", "Farm Block 12, Chisamba", "Business"),
+            ("Eastern", "Province School", "Eastern Province Education Board", "admin@epeducation.gov.zm", "0976543210", "Chipata Central, Eastern Province", "Government"),
         ]
         customers = []
         for fn, ln, co, em, ph, ad, ct in customers_data:
@@ -66,9 +66,9 @@ def seed():
 
         sites = []
         site_data = [
-            (customers[0], "Home Residence", "12 Oak St", "Cape Town", "Western Cape", "8001", "Household"),
-            (customers[1], "Main Farm", "Plot 45", "Stellenbosch", "Western Cape", "7600", "Farm"),
-            (customers[2], "School Campus", "1 School Rd", "Paarl", "Western Cape", "7646", "School"),
+            (customers[0], "Kabulonga Home", "Plot 234, Kabulonga", "Lusaka", "Lusaka", "10101", "Household"),
+            (customers[1], "Chisamba Main Farm", "Farm Block 12", "Chisamba", "Central", "10102", "Farm"),
+            (customers[2], "Chipata School Campus", "School Road, Chipata", "Chipata", "Eastern", "10103", "School"),
         ]
         for cust, name, addr, city, prov, pc, st in site_data:
             s = Site(customer_id=cust.customer_id, site_name=name, address=addr, city=city, province=prov, postal_code=pc, site_type=st)
@@ -93,7 +93,7 @@ def seed():
             et = types[i % 3]
             eq = Equipment(
                 equipment_type_id=et.equipment_type_id,
-                serial_number=f"SG-2026-{i:04d}",
+                serial_number=f"SG-ZM-2026-{i:04d}",
                 status="Available" if i > 5 else ("Installed" if i <= 2 else "Reserved"),
                 site_id=sites[0].site_id if i <= 2 else None,
                 date_received=date.today() - timedelta(days=30 + i),
@@ -104,11 +104,11 @@ def seed():
 
         technicians = []
         for fn, ln, em, spec in [
-            ("Thabo", "Molefe", "thabo.m@solargrid.co.za", "Solar Panels"),
-            ("Anna", "Jacobs", "anna.j@solargrid.co.za", "Inverter Systems"),
-            ("Mike", "Chen", "mike.c@solargrid.co.za", "Battery Storage"),
+            ("Patrick", "Mbewe", "patrick.m@solargrid.co.zm", "Solar Panels"),
+            ("Beatrice", "Mukuka", "beatrice.m@solargrid.co.zm", "Inverter Systems"),
+            ("John", "Chilufya", "john.c@solargrid.co.zm", "Battery Storage"),
         ]:
-            t = Technician(first_name=fn, last_name=ln, email=em, phone="0820000000", specialisation=spec, hire_date=date(2024, 1, 15))
+            t = Technician(first_name=fn, last_name=ln, email=em, phone="0977000001", specialisation=spec, hire_date=date(2024, 1, 15))
             db.session.add(t)
             technicians.append(t)
         db.session.flush()
@@ -157,10 +157,10 @@ def seed():
         inv2 = Invoice(invoice_number="INV-2026-0002", customer_id=customers[1].customer_id, date_issued=date.today() - timedelta(days=10), due_date=date.today() + timedelta(days=20), total_amount=Decimal("125000.00"), amount_paid=Decimal("0"), status="Issued", created_by=staff_map["finance"].staff_id)
         db.session.add_all([inv1, inv2])
         db.session.flush()
-        db.session.add(Payment(invoice_id=inv1.invoice_id, payment_date=datetime.utcnow() - timedelta(days=30), amount=Decimal("30000.00"), payment_method="EFT", reference_number="EFT-001", status="Confirmed", recorded_by=staff_map["finance"].staff_id))
+        db.session.add(Payment(invoice_id=inv1.invoice_id, payment_date=datetime.utcnow() - timedelta(days=30), amount=Decimal("30000.00"), payment_method="EFT", reference_number="ZANACO-001", status="Confirmed", recorded_by=staff_map["finance"].staff_id))
 
         db.session.commit()
-        print("Database seeded successfully.")
+        print("Database seeded successfully with Zambian sample data.")
         print("\nDevelopment credentials (all roles):")
         print("  Password: SolarGrid2026!")
         for username, role, *_ in staff_users:

@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--username", default="admin")
-    parser.add_argument("--email", default="admin@solargrid.co.za")
+    parser.add_argument("--email", default="admin@solargrid.co.zm")
     parser.add_argument("--password", required=True)
     args = parser.parse_args()
     create_admin(args.username, args.email, args.password)
