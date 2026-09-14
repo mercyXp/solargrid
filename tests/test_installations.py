@@ -1,4 +1,7 @@
 from datetime import date
+from decimal import Decimal
+
+import pytest
 
 from app.extensions import db
 from app.models.customer import Customer
@@ -8,7 +11,6 @@ from app.models.site import Site
 from app.models.staff import Staff
 from app.models.technician import Technician
 from app.services.installation_service import InstallationService, InstallationServiceError
-from decimal import Decimal
 
 
 def _setup_installation(app):
@@ -47,6 +49,3 @@ def test_cancelled_cannot_reactivate(app):
         db.session.commit()
         with pytest.raises(InstallationServiceError):
             InstallationService.update_status(inst.installation_id, "Scheduled", staff)
-
-
-import pytest

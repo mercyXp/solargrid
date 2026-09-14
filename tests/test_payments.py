@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 from app.extensions import db
 from app.models.customer import Customer
 from app.models.invoice import Invoice
@@ -45,6 +47,3 @@ def test_paid_invoice_rejects_payment(app):
         staff = Staff.query.get(staff.staff_id)
         with pytest.raises(PaymentServiceError):
             PaymentService.confirm_payment(inv.invoice_id, Decimal("100.00"), "EFT", staff)
-
-
-import pytest
