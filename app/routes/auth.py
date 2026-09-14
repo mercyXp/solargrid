@@ -27,8 +27,15 @@ def health():
             "seeded": staff_count > 0,
         }, 200
     except Exception as exc:
-        logger.exception("Health check failed")
-        return {"status": "error", "database": "failed", "message": str(exc)}, 500
+        from config import database_connection_label
+
+        logger.exception("Health check failed for %s", database_connection_label())
+        return {
+            "status": "error",
+            "database": "failed",
+            "target": database_connection_label(),
+            "message": str(exc),
+        }, 500
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
