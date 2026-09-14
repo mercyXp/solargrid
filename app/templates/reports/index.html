@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports{% endblock %}
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title fw-semibold"><i class="bi bi-shield-exclamation text-warning"></i> Warranty Expiry</h5>
+            <p class="card-text text-muted small">Warranties by status and expiry window.</p>
+            <a href="{{ url_for('reports.warranty_expiry') }}" class="btn btn-outline-primary btn-sm">View Report</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title fw-semibold"><i class="bi bi-headset text-danger"></i> Unresolved Services</h5>
+            <p class="card-text text-muted small">Open and in-progress service requests by priority.</p>
+            <a href="{{ url_for('reports.unresolved_services') }}" class="btn btn-outline-primary btn-sm">View Report</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title fw-semibold"><i class="bi bi-person-badge text-info"></i> Technician Workload</h5>
+            <p class="card-text text-muted small">Active assignments and maintenance visits per technician.</p>
+            <a href="{{ url_for('reports.technician_workload') }}" class="btn btn-outline-primary btn-sm">View Report</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title fw-semibold"><i class="bi bi-receipt text-warning"></i> Outstanding Balances</h5>
+            <p class="card-text text-muted small">Unpaid invoices with ageing analysis.</p>
+            <a href="{{ url_for('reports.outstanding_balances') }}" class="btn btn-outline-primary btn-sm">View Report</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title fw-semibold"><i class="bi bi-currency-dollar text-success"></i> Revenue</h5>
+            <p class="card-text text-muted small">Invoiced vs paid amounts by period.</p>
+            <a href="{{ url_for('reports.revenue') }}" class="btn btn-outline-primary btn-sm">View Report</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

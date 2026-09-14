@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">{{ form.site_id.label.text }}</label>{{ form.site_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.equipment_id.label.text }}</label>{{ form.equipment_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.priority.label.text }}</label>{{ form.priority(class="form-select") }}</div>
+        <div class="col-12"><label class="form-label">{{ form.description.label.text }}</label>{{ form.description(class="form-control", rows=4) }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('services.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">{{ form.equipment_type_id.label.text }}</label>{{ form.equipment_type_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.serial_number.label.text }}</label>{{ form.serial_number(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.site_id.label.text }}</label>{{ form.site_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.status.label.text }}</label>{{ form.status(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.date_received.label.text }}</label>{{ form.date_received(class="form-control", type="date") }}</div>
+        <div class="col-12"><label class="form-label">{{ form.notes.label.text }}</label>{{ form.notes(class="form-control", rows=3) }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('equipment.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

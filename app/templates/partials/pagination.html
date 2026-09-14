@@ -1,0 +1,22 @@
+{% if pagination and pagination.pages > 1 %}
+<nav aria-label="Pagination" class="mt-3">
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ page_url(pagination.prev_num) if pagination.has_prev else '#' }}">Previous</a>
+        </li>
+        {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if p %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+            <a class="page-link" href="{{ page_url(p) }}">{{ p }}</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+        {% endif %}
+        {% endfor %}
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ page_url(pagination.next_num) if pagination.has_next else '#' }}">Next</a>
+        </li>
+    </ul>
+    <p class="text-center text-muted small">Showing {{ pagination.total }} records</p>
+</nav>
+{% endif %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ site.site_name }}{% endblock %}
+{% block page_title %}Site Details{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('sites.index') }}">Sites</a> / {{ site.site_name }}</nav>
+<div class="card mb-4"><div class="card-body">
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+        <div>
+            <h2 class="h4">{{ site.site_name }}</h2>
+            <p class="mb-1"><i class="bi bi-person"></i> <a href="{{ url_for('customers.detail', customer_id=site.customer.customer_id) }}">{{ site.customer.full_name }}</a></p>
+            <p class="mb-1"><i class="bi bi-geo"></i> {{ site.address }}, {{ site.city }}, {{ site.province }}{% if site.postal_code %} {{ site.postal_code }}{% endif %}</p>
+            <p class="mb-1"><i class="bi bi-building"></i> {{ site.site_type }}</p>
+            {% if site.latitude and site.longitude %}
+            <p class="mb-0 text-muted small"><i class="bi bi-pin-map"></i> {{ site.latitude }}, {{ site.longitude }}</p>
+            {% endif %}
+        </div>
+        {% if has_permission(Permission.MANAGE_SITES) %}
+        <div>
+            <a href="{{ url_for('sites.edit', site_id=site.site_id) }}" class="btn btn-primary btn-sm">Edit</a>
+        </div>
+        {% endif %}
+    </div>
+</div></div>
+
+<h5 class="fw-semibold">Installations</h5>
+<div class="card mb-4"><div class="table-responsive">
+<table class="table mb-0"><thead><tr><th>ID</th><th>Planned Date</th><th>Status</th><th></th></tr></thead>
+<tbody>
+{% for i in site.installations %}
+<tr>
+    <td>#{{ i.installation_id }}</td>
+    <td>{{ i.planned_date }}</td>
+    <td>{{ i.status }}</td>
+    <td><a href="{{ url_for('installations.detail', installation_id=i.installation_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
+</tr>
+{% else %}
+<tr><td colspan="4" class="text-muted">No installations.</td></tr>
+{% endfor %}
+</tbody>
+</table></div></div>
+
+<h5 class="fw-semibold">Equipment on Site</h5>
+<div class="card"><div class="table-responsive">
+<table class="table mb-0"><thead><tr><th>Serial</th><th>Type</th><th>Status</th></tr></thead>
+<tbody>
+{% for e in site.equipment_items %}
+<tr>
+    <td>{{ e.serial_number }}</td>
+    <td>{{ e.equipment_type.manufacturer }} {{ e.equipment_type.model_name }}</td>
+    <td>{{ e.status }}</td>
+</tr>
+{% else %}
+<tr><td colspan="3" class="text-muted">No equipment at this site.</td></tr>
+{% endfor %}
+</tbody>
+</table></div></div>
+{% endblock %}

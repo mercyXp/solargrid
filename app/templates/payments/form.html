@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-12"><label class="form-label">{{ form.invoice_id.label.text }}</label>{{ form.invoice_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.payment_date.label.text }}</label>{{ form.payment_date(class="form-control", type="datetime-local") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.amount.label.text }}</label>{{ form.amount(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.payment_method.label.text }}</label>{{ form.payment_method(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.reference_number.label.text }}</label>{{ form.reference_number(class="form-control") }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('payments.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

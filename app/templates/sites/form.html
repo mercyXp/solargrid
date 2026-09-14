@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-12"><label class="form-label">{{ form.customer_id.label.text }}</label>{{ form.customer_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.site_name.label.text }}</label>{{ form.site_name(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.site_type.label.text }}</label>{{ form.site_type(class="form-select") }}</div>
+        <div class="col-12"><label class="form-label">{{ form.address.label.text }}</label>{{ form.address(class="form-control", rows=2) }}</div>
+        <div class="col-md-4"><label class="form-label">{{ form.city.label.text }}</label>{{ form.city(class="form-control") }}</div>
+        <div class="col-md-4"><label class="form-label">{{ form.province.label.text }}</label>{{ form.province(class="form-control") }}</div>
+        <div class="col-md-4"><label class="form-label">{{ form.postal_code.label.text }}</label>{{ form.postal_code(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.latitude.label.text }}</label>{{ form.latitude(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.longitude.label.text }}</label>{{ form.longitude(class="form-control") }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('sites.detail', site_id=site.site_id) if site else url_for('sites.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

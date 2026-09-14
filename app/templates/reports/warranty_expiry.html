@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Warranty Expiry Report{% endblock %}
+{% block page_title %}Warranty Expiry Report{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('reports.index') }}">Reports</a> / Warranty Expiry</nav>
+<form class="d-flex gap-2 mb-3" method="get">
+    <select name="status" class="form-select form-select-sm" style="max-width: 200px;">
+        <option value="">All statuses</option>
+        {% for s in ['Active','Expired','Claimed','Voided'] %}
+        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary btn-sm">Filter</button>
+</form>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Equipment</th><th>Type</th><th>Start</th><th>End</th><th>Warranty Type</th><th>Status</th></tr></thead>
+    <tbody>
+    {% for w in results %}
+    <tr>
+        <td><a href="{{ url_for('warranties.detail', warranty_id=w.warranty_id) }}">{{ w.equipment.serial_number }}</a></td>
+        <td>{{ w.equipment.equipment_type.manufacturer }} {{ w.equipment.equipment_type.model_name }}</td>
+        <td>{{ w.start_date }}</td>
+        <td>{{ w.end_date }}</td>
+        <td>{{ w.warranty_type }}</td>
+        <td>{{ status_badge(w.status) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty-state">No warranties match the filter.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+<p class="text-muted small mt-2">{{ results|length }} record(s)</p>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Service Requests{% endblock %}
+{% block page_title %}Service Requests{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <form class="d-flex gap-2 flex-wrap" method="get">
+        <select name="status" class="form-select form-select-sm">
+            <option value="">All statuses</option>
+            {% for s in ['Open','In Progress','Resolved','Closed'] %}
+            <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        <select name="priority" class="form-select form-select-sm">
+            <option value="">All priorities</option>
+            {% for p in ['Low','Medium','High','Critical'] %}
+            <option value="{{ p }}" {% if priority == p %}selected{% endif %}>{{ p }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-primary btn-sm">Filter</button>
+    </form>
+    {% if has_permission(Permission.CREATE_SERVICE_REQUESTS) %}
+    <a href="{{ url_for('services.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> New Request</a>
+    {% endif %}
+</div>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>ID</th><th>Site</th><th>Priority</th><th>Status</th><th>Raised</th><th></th></tr></thead>
+    <tbody>
+    {% for sr in pagination.items %}
+    <tr>
+        <td>#{{ sr.request_id }}</td>
+        <td><a href="{{ url_for('sites.detail', site_id=sr.site.site_id) }}">{{ sr.site.site_name }}</a></td>
+        <td>{{ status_badge(sr.priority) }}</td>
+        <td>{{ status_badge(sr.status) }}</td>
+        <td>{{ sr.date_raised.strftime('%Y-%m-%d') if sr.date_raised else '—' }}</td>
+        <td><a href="{{ url_for('services.detail', request_id=sr.request_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty-state">No service requests found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% include "partials/pagination.html" %}
+{% endblock %}

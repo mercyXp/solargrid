@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Outstanding Balances Report{% endblock %}
+{% block page_title %}Outstanding Balances{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('reports.index') }}">Reports</a> / Outstanding Balances</nav>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Invoice</th><th>Customer</th><th>Due Date</th><th>Total</th><th>Outstanding</th><th>Status</th><th>Ageing</th><th>Days Overdue</th></tr></thead>
+    <tbody>
+    {% for row in results %}
+    <tr>
+        <td><a href="{{ url_for('invoices.detail', invoice_id=row.invoice.invoice_id) }}">{{ row.invoice.invoice_number }}</a></td>
+        <td>{{ row.invoice.customer.full_name }}</td>
+        <td>{{ row.invoice.due_date }}</td>
+        <td>R{{ '%.2f'|format(row.invoice.total_amount|float) }}</td>
+        <td>R{{ '%.2f'|format(row.outstanding|float) }}</td>
+        <td>{{ status_badge(row.invoice.status) }}</td>
+        <td>{{ row.ageing }}</td>
+        <td>{% if row.days_overdue > 0 %}{{ row.days_overdue }}{% else %}—{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="8" class="empty-state">No outstanding balances.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+<p class="text-muted small mt-2">{{ results|length }} invoice(s)</p>
+{% endblock %}

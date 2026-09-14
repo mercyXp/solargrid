@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Equipment Types{% endblock %}
+{% block page_title %}Equipment Types{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    {% if has_permission(Permission.MANAGE_EQUIPMENT_TYPES) %}
+    <a href="{{ url_for('equipment.type_create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> New Equipment Type</a>
+    {% endif %}
+</div>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Category</th><th>Manufacturer</th><th>Model</th><th>Model #</th><th>Unit Price</th><th>Warranty</th><th>Active</th></tr></thead>
+    <tbody>
+    {% for t in types %}
+    <tr>
+        <td>{{ t.category }}</td>
+        <td>{{ t.manufacturer }}</td>
+        <td>{{ t.model_name }}</td>
+        <td>{{ t.model_number or '—' }}</td>
+        <td>R{{ '%.2f'|format(t.unit_price|float) }}</td>
+        <td>{{ t.default_warranty_months }} mo</td>
+        <td>{% if t.is_active %}<span class="badge bg-success-custom">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-state">No equipment types defined.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% endblock %}

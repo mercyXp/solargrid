@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">{{ form.username.label.text }}</label>{{ form.username(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.email.label.text }}</label>{{ form.email(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.first_name.label.text }}</label>{{ form.first_name(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.last_name.label.text }}</label>{{ form.last_name(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.role.label.text }}</label>{{ form.role(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.password.label.text }}</label>{{ form.password(class="form-control") }}{% if staff %}<div class="form-text">Leave blank to keep current password.</div>{% endif %}</div>
+        <div class="col-12">
+            <div class="form-check">{{ form.is_active(class="form-check-input") }}<label class="form-check-label">{{ form.is_active.label.text }}</label></div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('staff.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

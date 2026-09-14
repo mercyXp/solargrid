@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}{{ invoice.invoice_number }}{% endblock %}
+{% block page_title %}Invoice {{ invoice.invoice_number }}{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('invoices.index') }}">Invoices</a> / {{ invoice.invoice_number }}</nav>
+<div class="card mb-4"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <h2 class="h4 mb-2">{{ invoice.invoice_number }} {{ status_badge(invoice.status) }}</h2>
+            <p class="mb-1"><strong>Customer:</strong> <a href="{{ url_for('customers.detail', customer_id=invoice.customer.customer_id) }}">{{ invoice.customer.full_name }}</a></p>
+            <p class="mb-1"><strong>Issued:</strong> {{ invoice.date_issued }} &nbsp; <strong>Due:</strong> {{ invoice.due_date }}</p>
+            {% if invoice.installation %}<p class="mb-1"><strong>Installation:</strong> <a href="{{ url_for('installations.detail', installation_id=invoice.installation.installation_id) }}">#{{ invoice.installation.installation_id }}</a></p>{% endif %}
+            {% if invoice.service_request %}<p class="mb-1"><strong>Service Request:</strong> <a href="{{ url_for('services.detail', request_id=invoice.service_request.request_id) }}">#{{ invoice.service_request.request_id }}</a></p>{% endif %}
+        </div>
+        <div class="text-end">
+            <p class="mb-1 h5">R{{ '%.2f'|format(invoice.total_amount|float) }}</p>
+            <p class="mb-1 text-muted small">Paid: R{{ '%.2f'|format(invoice.amount_paid|float) }}</p>
+            <p class="mb-0 fw-semibold">Outstanding: R{{ '%.2f'|format(invoice.outstanding) }}</p>
+            {% if has_permission(Permission.MANAGE_PAYMENTS) and invoice.status not in ['Paid', 'Cancelled'] %}
+            <a href="{{ url_for('payments.create') }}?invoice_id={{ invoice.invoice_id }}" class="btn btn-primary btn-sm mt-2">Record Payment</a>
+            {% endif %}
+        </div>
+    </div>
+</div></div>
+
+<h5 class="fw-semibold">Payments</h5>
+<div class="card"><div class="table-responsive">
+<table class="table mb-0"><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Reference</th><th>Status</th></tr></thead>
+<tbody>
+{% for p in invoice.payments %}
+<tr>
+    <td>{{ p.payment_date.strftime('%Y-%m-%d %H:%M') if p.payment_date else '—' }}</td>
+    <td>R{{ '%.2f'|format(p.amount|float) }}</td>
+    <td>{{ p.payment_method }}</td>
+    <td>{{ p.reference_number or '—' }}</td>
+    <td>{{ status_badge(p.status) }}</td>
+</tr>
+{% else %}
+<tr><td colspan="5" class="text-muted">No payments recorded.</td></tr>
+{% endfor %}
+</tbody>
+</table></div></div>
+{% endblock %}

@@ -1,0 +1,16 @@
+-- Named constraints reference (applied via SQLAlchemy models / migrations)
+-- DB-01: uk_customer_email ON customer(email)
+-- DB-02: chk_equipment_type_unit_price ON equipment_type(unit_price > 0)
+-- DB-03: chk_equipment_type_warranty_months ON equipment_type(default_warranty_months > 0)
+-- DB-04: uk_equipment_serial_number ON equipment(serial_number)
+-- DB-05: uk_installation_detail_equipment_id ON installation_detail(equipment_id)
+-- DB-06: uk_installation_assignment ON installation_assignment(installation_id, technician_id)
+-- DB-07: uk_service_assignment ON service_assignment(request_id, technician_id)
+-- DB-08: chk_warranty_dates ON warranty(end_date > start_date)
+-- DB-09: chk_invoice_total_amount ON invoice(total_amount > 0)
+-- DB-10: chk_invoice_amount_paid ON invoice(amount_paid >= 0)
+-- DB-11: chk_invoice_due_date ON invoice(due_date >= date_issued)
+-- DB-12: chk_payment_amount ON payment(amount > 0)
+-- DB-13: chk_maintenance_hours_worked ON maintenance_record(hours_worked > 0)
+-- DB-14: fk_site_customer_id RESTRICT; fk_equipment_site_id RESTRICT
+-- DB-15: fk_installation_created_by RESTRICT; fk_invoice_created_by RESTRICT

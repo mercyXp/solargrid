@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Forbidden{% endblock %}
+{% block page_title %}Forbidden{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-muted">403</h1>
+        <p class="lead">Forbidden</p>
+        <p class="text-muted">You do not have permission to access this resource.</p>
+        <a href="{{ url_for('dashboard.index') if current_user else url_for('auth.login') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="card login-card shadow-sm text-center">
+        <h1 class="display-4 fw-bold text-muted">403</h1>
+        <p class="lead">Forbidden</p>
+        <p class="text-muted">You do not have permission to access this resource.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Back to Login</a>
+    </div>
+</div>
+{% endblock %}

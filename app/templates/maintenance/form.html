@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">{{ form.request_id.label.text }}</label>{{ form.request_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.technician_id.label.text }}</label>{{ form.technician_id(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.maintenance_date.label.text }}</label>{{ form.maintenance_date(class="form-control", type="datetime-local") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.hours_worked.label.text }}</label>{{ form.hours_worked(class="form-control") }}</div>
+        <div class="col-12"><label class="form-label">{{ form.work_description.label.text }}</label>{{ form.work_description(class="form-control", rows=3) }}</div>
+        <div class="col-12"><label class="form-label">{{ form.parts_used.label.text }}</label>{{ form.parts_used(class="form-control", rows=2) }}</div>
+        <div class="col-12"><label class="form-label">{{ form.resolution_notes.label.text }}</label>{{ form.resolution_notes(class="form-control", rows=2) }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('maintenance.index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Unauthorized{% endblock %}
+{% block page_title %}Unauthorized{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-muted">401</h1>
+        <p class="lead">Unauthorized</p>
+        <p class="text-muted">Please sign in to access this page.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Sign In</a>
+    </div>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="card login-card shadow-sm text-center">
+        <h1 class="display-4 fw-bold text-muted">401</h1>
+        <p class="lead">Unauthorized</p>
+        <p class="text-muted">Please sign in to access this page.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Sign In</a>
+    </div>
+</div>
+{% endblock %}

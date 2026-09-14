@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Warranties{% endblock %}
+{% block page_title %}Warranties{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <form class="d-flex gap-2 flex-wrap" method="get">
+        {% if not view %}
+        <select name="status" class="form-select form-select-sm">
+            <option value="">All statuses</option>
+            {% for s in ['Active','Expired','Claimed','Voided'] %}
+            <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        <button class="btn btn-primary btn-sm">Filter</button>
+    </form>
+    <div class="btn-group btn-group-sm">
+        <a href="{{ url_for('warranties.index') }}" class="btn btn-outline-secondary {% if not view %}active{% endif %}">All</a>
+        <a href="{{ url_for('warranties.index', view='expiring') }}" class="btn btn-outline-secondary {% if view == 'expiring' %}active{% endif %}">Expiring (30d)</a>
+        <a href="{{ url_for('warranties.index', view='expired') }}" class="btn btn-outline-secondary {% if view == 'expired' %}active{% endif %}">Expired</a>
+    </div>
+</div>
+{% if view %}
+<h6 class="text-muted mb-2">{% if view == 'expiring' %}Warranties expiring within 30 days{% else %}Expired warranties{% endif %}</h6>
+{% endif %}
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Equipment</th><th>Type</th><th>Start</th><th>End</th><th>Warranty Type</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    {% set items = warranties if warranties is defined else pagination.items %}
+    {% for w in items %}
+    <tr>
+        <td>{{ w.equipment.serial_number }}</td>
+        <td>{{ w.equipment.equipment_type.manufacturer }} {{ w.equipment.equipment_type.model_name }}</td>
+        <td>{{ w.start_date }}</td>
+        <td>{{ w.end_date }}</td>
+        <td>{{ w.warranty_type }}</td>
+        <td>{{ status_badge(w.status) }}</td>
+        <td><a href="{{ url_for('warranties.detail', warranty_id=w.warranty_id) }}" class="btn btn-sm btn-outline-secondary">View</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-state">No warranties found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% if pagination %}{% include "partials/pagination.html" %}{% endif %}
+{% endblock %}

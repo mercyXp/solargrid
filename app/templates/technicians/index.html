@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Technicians{% endblock %}
+{% block page_title %}Technicians{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    {% if has_permission(Permission.MANAGE_TECHNICIANS) %}
+    <a href="{{ url_for('technicians.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Technician</a>
+    {% endif %}
+</div>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Specialisation</th><th>Hire Date</th><th>Active</th><th></th></tr></thead>
+    <tbody>
+    {% for t in pagination.items %}
+    <tr>
+        <td>{{ t.full_name }}</td>
+        <td>{{ t.email }}</td>
+        <td>{{ t.phone }}</td>
+        <td>{{ t.specialisation or '—' }}</td>
+        <td>{{ t.hire_date }}</td>
+        <td>{% if t.is_active %}<span class="badge bg-success-custom">Active</span>{% else %}<span class="badge bg-secondary">Inactive</span>{% endif %}</td>
+        <td>
+            {% if has_permission(Permission.MANAGE_TECHNICIANS) %}
+            <a href="{{ url_for('technicians.edit', technician_id=t.technician_id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-state">No technicians found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% include "partials/pagination.html" %}
+{% endblock %}

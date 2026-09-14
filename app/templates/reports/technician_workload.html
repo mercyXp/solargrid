@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Technician Workload Report{% endblock %}
+{% block page_title %}Technician Workload{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('reports.index') }}">Reports</a> / Technician Workload</nav>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Technician</th><th>Specialisation</th><th>Active Installations</th><th>Active Services</th><th>Maintenance Visits</th><th>Total Workload</th></tr></thead>
+    <tbody>
+    {% for row in results %}
+    <tr>
+        <td>{{ row.technician.full_name }}</td>
+        <td>{{ row.technician.specialisation or '—' }}</td>
+        <td>{{ row.active_installations }}</td>
+        <td>{{ row.active_services }}</td>
+        <td>{{ row.maintenance_visits }}</td>
+        <td><span class="badge {% if row.total_workload > 5 %}bg-danger-custom{% elif row.total_workload > 2 %}bg-warning-custom{% else %}bg-success-custom{% endif %}">{{ row.total_workload }}</span></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty-state">No active technicians found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+<p class="text-muted small mt-2">{{ results|length }} technician(s)</p>
+{% endblock %}

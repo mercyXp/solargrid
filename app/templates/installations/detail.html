@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Installation #{{ installation.installation_id }}{% endblock %}
+{% block page_title %}Installation #{{ installation.installation_id }}{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('installations.index') }}">Installations</a> / #{{ installation.installation_id }}</nav>
+
+<div class="card mb-4"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <h2 class="h4 mb-2">Installation #{{ installation.installation_id }} {{ status_badge(installation.status) }}</h2>
+            <p class="mb-1"><i class="bi bi-geo-alt"></i> <a href="{{ url_for('sites.detail', site_id=installation.site.site_id) }}">{{ installation.site.site_name }}</a></p>
+            <p class="mb-1"><i class="bi bi-calendar"></i> Planned: {{ installation.planned_date }}</p>
+            {% if installation.actual_start_date %}<p class="mb-1">Started: {{ installation.actual_start_date }}</p>{% endif %}
+            {% if installation.completion_date %}<p class="mb-1">Completed: {{ installation.completion_date }}</p>{% endif %}
+            {% if installation.notes %}<p class="mb-0 text-muted">{{ installation.notes }}</p>{% endif %}
+        </div>
+        {% if has_permission(Permission.MANAGE_INSTALLATIONS) and installation.status not in ['Completed', 'Cancelled'] %}
+        <div class="d-flex flex-wrap gap-2">
+            {% if installation.status == 'Scheduled' %}
+            <form method="post" action="{{ url_for('installations.update_status', installation_id=installation.installation_id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="In Progress">
+                <button class="btn btn-info btn-sm">Start (In Progress)</button>
+            </form>
+            <form method="post" action="{{ url_for('installations.update_status', installation_id=installation.installation_id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="Cancelled">
+                <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Cancel this installation?');">Cancel</button>
+            </form>
+            {% elif installation.status == 'In Progress' %}
+            <form method="post" action="{{ url_for('installations.update_status', installation_id=installation.installation_id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="status" value="Cancelled">
+                <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Cancel this installation?');">Cancel</button>
+            </form>
+            {% if has_permission(Permission.COMPLETE_INSTALLATIONS) %}
+            <form method="post" action="{{ url_for('installations.complete', installation_id=installation.installation_id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-success btn-sm" onclick="return confirm('Complete installation? Equipment will be installed and warranties created.');"><i class="bi bi-check-lg"></i> Complete Installation</button>
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div></div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <h5 class="fw-semibold">Equipment Assignments</h5>
+        <div class="card mb-3"><div class="table-responsive">
+        <table class="table mb-0"><thead><tr><th>Serial</th><th>Type</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for d in installation.details %}
+        <tr>
+            <td>{{ d.equipment.serial_number }}</td>
+            <td>{{ d.equipment.equipment_type.manufacturer }} {{ d.equipment.equipment_type.model_name }}</td>
+            <td>R{{ '%.2f'|format(d.unit_price_at_install|float) }}</td>
+            <td>{{ status_badge(d.equipment.status) }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-muted">No equipment assigned yet.</td></tr>
+        {% endfor %}
+        </tbody>
+        </table></div></div>
+        {% if has_permission(Permission.MANAGE_INSTALLATIONS) and installation.status in ['Scheduled', 'In Progress'] and available_equipment %}
+        <div class="card"><div class="card-body">
+            <h6 class="fw-semibold">Assign Equipment</h6>
+            <form method="post" action="{{ url_for('installations.assign_equipment', installation_id=installation.installation_id) }}" class="d-flex gap-2">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <select name="equipment_id" class="form-select form-select-sm" required>
+                    <option value="">Select equipment…</option>
+                    {% for e in available_equipment %}
+                    <option value="{{ e.equipment_id }}">{{ e.serial_number }} — {{ e.equipment_type.manufacturer }} {{ e.equipment_type.model_name }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary btn-sm">Assign</button>
+            </form>
+        </div></div>
+        {% endif %}
+    </div>
+    <div class="col-lg-6">
+        <h5 class="fw-semibold">Technician Assignments</h5>
+        <div class="card mb-3"><div class="table-responsive">
+        <table class="table mb-0"><thead><tr><th>Technician</th><th>Role</th><th>Assigned</th></tr></thead>
+        <tbody>
+        {% for a in installation.assignments %}
+        <tr>
+            <td>{{ a.technician.full_name }}</td>
+            <td>{{ a.role_in_team }}</td>
+            <td>{{ a.assigned_date.strftime('%Y-%m-%d') if a.assigned_date else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="text-muted">No technicians assigned yet.</td></tr>
+        {% endfor %}
+        </tbody>
+        </table></div></div>
+        {% if has_permission(Permission.MANAGE_INSTALLATIONS) and installation.status in ['Scheduled', 'In Progress'] and technicians %}
+        <div class="card"><div class="card-body">
+            <h6 class="fw-semibold">Assign Technician</h6>
+            <form method="post" action="{{ url_for('installations.assign_technician', installation_id=installation.installation_id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="row g-2">
+                    <div class="col-md-7">
+                        <select name="technician_id" class="form-select form-select-sm" required>
+                            <option value="">Select technician…</option>
+                            {% for t in technicians %}
+                            <option value="{{ t.technician_id }}">{{ t.full_name }}{% if t.specialisation %} ({{ t.specialisation }}){% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="role_in_team" class="form-select form-select-sm">
+                            <option value="Lead">Lead</option>
+                            <option value="Assistant" selected>Assistant</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-sm w-100">Assign</button>
+                    </div>
+                </div>
+            </form>
+        </div></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

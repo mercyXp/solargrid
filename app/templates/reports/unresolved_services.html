@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Unresolved Services Report{% endblock %}
+{% block page_title %}Unresolved Services{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('reports.index') }}">Reports</a> / Unresolved Services</nav>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>ID</th><th>Site</th><th>Priority</th><th>Status</th><th>Raised</th><th>Description</th></tr></thead>
+    <tbody>
+    {% for sr in results %}
+    <tr>
+        <td><a href="{{ url_for('services.detail', request_id=sr.request_id) }}">#{{ sr.request_id }}</a></td>
+        <td>{{ sr.site.site_name }}</td>
+        <td>{{ status_badge(sr.priority) }}</td>
+        <td>{{ status_badge(sr.status) }}</td>
+        <td>{{ sr.date_raised.strftime('%Y-%m-%d') if sr.date_raised else '—' }}</td>
+        <td class="text-truncate" style="max-width: 240px;">{{ sr.description }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty-state">No unresolved service requests.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+<p class="text-muted small mt-2">{{ results|length }} record(s)</p>
+{% endblock %}

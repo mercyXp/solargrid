@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -55,7 +56,7 @@ class PaymentService:
                 payment_method=payment_method,
                 reference_number=kwargs.get("reference_number"),
                 status=kwargs.get("status", "Confirmed"),
-                payment_date=kwargs.get("payment_date"),
+                payment_date=kwargs.get("payment_date") or datetime.utcnow(),
                 recorded_by=recorded_by.staff_id,
             )
             db.session.add(payment)

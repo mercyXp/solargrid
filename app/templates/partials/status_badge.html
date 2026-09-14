@@ -1,0 +1,10 @@
+{% macro status_badge(status) %}
+{% set classes = {
+    'Completed': 'bg-success-custom', 'Paid': 'bg-success-custom', 'Resolved': 'bg-success-custom', 'Active': 'bg-success-custom',
+    'Cancelled': 'bg-danger-custom', 'Critical': 'bg-danger-custom', 'Overdue': 'bg-danger-custom', 'Faulty': 'bg-danger-custom',
+    'In Progress': 'bg-info-custom', 'Open': 'bg-warning-custom', 'Scheduled': 'bg-warning-custom',
+    'Partially Paid': 'bg-warning-custom', 'Issued': 'bg-info-custom', 'Draft': 'bg-secondary',
+    'Available': 'bg-success-custom', 'Reserved': 'bg-warning-custom', 'Installed': 'bg-info-custom'
+} %}
+<span class="badge badge-status {{ classes.get(status, 'bg-secondary') }}">{{ status }}</span>
+{% endmacro %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ customer.full_name }}{% endblock %}
+{% block page_title %}Customer Details{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('customers.index') }}">Customers</a> / {{ customer.full_name }}</nav>
+<div class="card mb-4"><div class="card-body">
+    <div class="d-flex justify-content-between">
+        <div>
+            <h2 class="h4">{{ customer.full_name }}</h2>
+            <p class="mb-1"><i class="bi bi-envelope"></i> {{ customer.email }}</p>
+            <p class="mb-1"><i class="bi bi-telephone"></i> {{ customer.phone }}</p>
+            <p class="mb-0"><i class="bi bi-geo"></i> {{ customer.address }}</p>
+        </div>
+        {% if has_permission(Permission.MANAGE_CUSTOMERS) %}
+        <div>
+            <a href="{{ url_for('customers.edit', customer_id=customer.customer_id) }}" class="btn btn-primary btn-sm">Edit</a>
+            {% if customer.sites.count() == 0 %}
+            <form method="post" action="{{ url_for('customers.delete', customer_id=customer.customer_id) }}" class="d-inline" onsubmit="return confirm('Delete this customer permanently?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-outline-danger btn-sm">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div></div>
+<h5 class="fw-semibold">Sites</h5>
+<div class="card"><div class="table-responsive">
+<table class="table mb-0"><thead><tr><th>Site</th><th>City</th><th>Type</th></tr></thead>
+<tbody>{% for s in customer.sites %}<tr><td><a href="{{ url_for('sites.detail', site_id=s.site_id) }}">{{ s.site_name }}</a></td><td>{{ s.city }}</td><td>{{ s.site_type }}</td></tr>{% else %}<tr><td colspan="3" class="text-muted">No sites.</td></tr>{% endfor %}</tbody>
+</table></div></div>
+{% endblock %}

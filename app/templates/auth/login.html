@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="card login-card shadow-sm">
+        <div class="login-brand">
+            <h1>Solar<span>Grid</span></h1>
+            <p class="text-muted mb-0">Energy Solutions Management System</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <label class="form-label" for="username">{{ form.username.label.text }}</label>
+                {{ form.username(class="form-control", id="username", autocomplete="username") }}
+            </div>
+            <div class="mb-4">
+                <label class="form-label" for="password">{{ form.password.label.text }}</label>
+                {{ form.password(class="form-control", id="password", autocomplete="current-password") }}
+            </div>
+            {{ form.submit(class="btn btn-primary w-100 py-2") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

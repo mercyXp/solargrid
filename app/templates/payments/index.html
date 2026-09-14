@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Payments{% endblock %}
+{% block page_title %}Payments{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    {% if has_permission(Permission.MANAGE_PAYMENTS) %}
+    <a href="{{ url_for('payments.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Record Payment</a>
+    {% endif %}
+</div>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>ID</th><th>Invoice</th><th>Customer</th><th>Date</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead>
+    <tbody>
+    {% for p in pagination.items %}
+    <tr>
+        <td>#{{ p.payment_id }}</td>
+        <td><a href="{{ url_for('invoices.detail', invoice_id=p.invoice.invoice_id) }}">{{ p.invoice.invoice_number }}</a></td>
+        <td>{{ p.invoice.customer.full_name }}</td>
+        <td>{{ p.payment_date.strftime('%Y-%m-%d %H:%M') if p.payment_date else '—' }}</td>
+        <td>R{{ '%.2f'|format(p.amount|float) }}</td>
+        <td>{{ p.payment_method }}</td>
+        <td>{{ p.reference_number or '—' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-state">No payments found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% include "partials/pagination.html" %}
+{% endblock %}

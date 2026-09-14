@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Revenue Report{% endblock %}
+{% block page_title %}Revenue Report{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('reports.index') }}">Reports</a> / Revenue</nav>
+<form class="d-flex gap-2 mb-3 flex-wrap" method="get">
+    <select name="period" class="form-select form-select-sm" style="max-width: 160px;">
+        <option value="monthly" {% if period == 'monthly' %}selected{% endif %}>Monthly</option>
+        <option value="quarterly" {% if period == 'quarterly' %}selected{% endif %}>Quarterly</option>
+        <option value="yearly" {% if period == 'yearly' %}selected{% endif %}>Yearly</option>
+    </select>
+    <input type="number" name="year" value="{{ year or '' }}" class="form-control form-control-sm" style="max-width: 120px;" placeholder="Year">
+    <button class="btn btn-primary btn-sm">Apply</button>
+</form>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Period</th><th>Invoiced</th><th>Paid</th><th>Outstanding</th></tr></thead>
+    <tbody>
+    {% for row in results %}
+    <tr>
+        <td>{{ row.period }}</td>
+        <td>R{{ '%.2f'|format(row.total_invoiced|float) }}</td>
+        <td>R{{ '%.2f'|format(row.total_paid|float) }}</td>
+        <td>R{{ '%.2f'|format(row.outstanding|float) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" class="empty-state">No revenue data for the selected period.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% endblock %}

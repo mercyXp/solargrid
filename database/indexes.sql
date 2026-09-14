@@ -1,0 +1,13 @@
+-- Recommended indexes (many created automatically by FK constraints)
+-- Apply after initial migration if not present:
+
+-- CREATE INDEX idx_equipment_status ON equipment(status);
+-- CREATE INDEX idx_equipment_site_id ON equipment(site_id);
+-- CREATE INDEX idx_installation_status ON installation(status);
+-- CREATE INDEX idx_installation_planned_date ON installation(planned_date);
+-- CREATE INDEX idx_service_request_status_priority ON service_request(status, priority, date_raised);
+-- CREATE INDEX idx_invoice_status ON invoice(status);
+-- CREATE INDEX idx_invoice_due_date ON invoice(due_date);
+-- CREATE INDEX idx_warranty_end_date ON warranty(end_date);
+-- CREATE INDEX idx_warranty_status ON warranty(status);
+-- CREATE INDEX idx_audit_created_at ON audit_log(created_at);

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Bad Request{% endblock %}
+{% block page_title %}Bad Request{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-muted">400</h1>
+        <p class="lead">Bad Request</p>
+        <p class="text-muted">The request could not be understood or was invalid.</p>
+        <a href="{{ url_for('dashboard.index') if current_user else url_for('auth.login') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="card login-card shadow-sm text-center">
+        <h1 class="display-4 fw-bold text-muted">400</h1>
+        <p class="lead">Bad Request</p>
+        <p class="text-muted">The request could not be understood or was invalid.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Back to Login</a>
+    </div>
+</div>
+{% endblock %}

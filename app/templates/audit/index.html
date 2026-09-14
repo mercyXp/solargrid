@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Audit Log{% endblock %}
+{% block page_title %}Audit Log{% endblock %}
+{% block content %}
+<form class="d-flex gap-2 mb-3 flex-wrap" method="get">
+    <input type="search" name="action" value="{{ action }}" class="form-control form-control-sm" placeholder="Filter by action…" style="max-width: 220px;">
+    <input type="search" name="entity_type" value="{{ entity_type }}" class="form-control form-control-sm" placeholder="Entity type…" style="max-width: 180px;">
+    <button class="btn btn-primary btn-sm">Filter</button>
+</form>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Timestamp</th><th>Staff</th><th>Action</th><th>Entity</th><th>Entity ID</th><th>Details</th><th>IP</th></tr></thead>
+    <tbody>
+    {% for log in pagination.items %}
+    <tr>
+        <td class="text-nowrap small">{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') if log.created_at else '—' }}</td>
+        <td>{{ log.staff.full_name if log.staff else 'System' }}</td>
+        <td><code class="small">{{ log.action }}</code></td>
+        <td>{{ log.entity_type }}</td>
+        <td>{{ log.entity_id or '—' }}</td>
+        <td class="small text-truncate" style="max-width: 200px;">{{ log.details or '—' }}</td>
+        <td class="small">{{ log.ip_address or '—' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty-state">No audit entries found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% include "partials/pagination.html" %}
+{% endblock %}

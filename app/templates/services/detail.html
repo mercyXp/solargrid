@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Service Request #{{ service_request.request_id }}{% endblock %}
+{% block page_title %}Service Request #{{ service_request.request_id }}{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('services.index') }}">Service Requests</a> / #{{ service_request.request_id }}</nav>
+
+<div class="card mb-4"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <h2 class="h4 mb-2">Request #{{ service_request.request_id }} {{ status_badge(service_request.status) }}</h2>
+            <p class="mb-1">Priority: {{ status_badge(service_request.priority) }}</p>
+            <p class="mb-1"><i class="bi bi-geo-alt"></i> <a href="{{ url_for('sites.detail', site_id=service_request.site.site_id) }}">{{ service_request.site.site_name }}</a></p>
+            {% if service_request.equipment %}
+            <p class="mb-1"><i class="bi bi-box-seam"></i> {{ service_request.equipment.serial_number }}</p>
+            {% endif %}
+            <p class="mb-1"><i class="bi bi-calendar"></i> Raised: {{ service_request.date_raised.strftime('%Y-%m-%d %H:%M') if service_request.date_raised else '—' }}</p>
+            {% if service_request.date_resolved %}<p class="mb-1">Resolved: {{ service_request.date_resolved.strftime('%Y-%m-%d %H:%M') }}</p>{% endif %}
+            <p class="mb-0 mt-2">{{ service_request.description }}</p>
+        </div>
+        {% if has_permission(Permission.MANAGE_SERVICE_REQUESTS) and service_request.status != 'Closed' %}
+        <div class="card border-0 bg-light p-3" style="min-width: 260px;">
+            <h6 class="fw-semibold mb-2">Update Status</h6>
+            <form method="post" action="{{ url_for('services.update_status', request_id=service_request.request_id) }}" class="d-flex gap-2">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <select name="status" class="form-select form-select-sm">
+                    {% if service_request.status == 'Open' %}
+                    <option value="In Progress">In Progress</option>
+                    <option value="Closed">Closed</option>
+                    {% elif service_request.status == 'In Progress' %}
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                    {% elif service_request.status == 'Resolved' %}
+                    <option value="Closed">Closed</option>
+                    {% endif %}
+                </select>
+                <button class="btn btn-primary btn-sm">Update</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div></div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <h5 class="fw-semibold">Assigned Technicians</h5>
+        <div class="card mb-3"><div class="table-responsive">
+        <table class="table mb-0"><thead><tr><th>Technician</th><th>Assigned</th></tr></thead>
+        <tbody>
+        {% for a in service_request.assignments %}
+        <tr>
+            <td>{{ a.technician.full_name }}</td>
+            <td>{{ a.assigned_date.strftime('%Y-%m-%d') if a.assigned_date else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" class="text-muted">No technicians assigned.</td></tr>
+        {% endfor %}
+        </tbody>
+        </table></div></div>
+        {% if has_permission(Permission.MANAGE_SERVICE_REQUESTS) and service_request.status in ['Open', 'In Progress'] and technicians %}
+        <div class="card"><div class="card-body">
+            <h6 class="fw-semibold">Assign Technician</h6>
+            <form method="post" action="{{ url_for('services.assign', request_id=service_request.request_id) }}" class="d-flex gap-2">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <select name="technician_id" class="form-select form-select-sm" required>
+                    <option value="">Select technician…</option>
+                    {% for t in technicians %}
+                    <option value="{{ t.technician_id }}">{{ t.full_name }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary btn-sm">Assign</button>
+            </form>
+        </div></div>
+        {% endif %}
+    </div>
+    <div class="col-lg-6">
+        <h5 class="fw-semibold">Maintenance Records</h5>
+        <div class="card"><div class="table-responsive">
+        <table class="table mb-0"><thead><tr><th>Date</th><th>Technician</th><th>Hours</th></tr></thead>
+        <tbody>
+        {% for m in service_request.maintenance_records %}
+        <tr>
+            <td>{{ m.maintenance_date.strftime('%Y-%m-%d') if m.maintenance_date else '—' }}</td>
+            <td>{{ m.technician.full_name }}</td>
+            <td>{{ m.hours_worked }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="text-muted">No maintenance records.</td></tr>
+        {% endfor %}
+        </tbody>
+        </table></div></div>
+        {% if has_permission(Permission.MANAGE_MAINTENANCE) and service_request.status != 'Closed' %}
+        <div class="mt-2">
+            <a href="{{ url_for('maintenance.create', request_id=service_request.request_id) }}" class="btn btn-sm btn-outline-primary">Record Maintenance</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

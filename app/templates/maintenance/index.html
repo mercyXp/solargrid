@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Maintenance Records{% endblock %}
+{% block page_title %}Maintenance Records{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+    {% if has_permission(Permission.MANAGE_MAINTENANCE) %}
+    <a href="{{ url_for('maintenance.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Record Maintenance</a>
+    {% endif %}
+</div>
+<div class="card"><div class="table-responsive">
+<table class="table table-hover mb-0">
+    <thead><tr><th>ID</th><th>Service Request</th><th>Site</th><th>Technician</th><th>Date</th><th>Hours</th></tr></thead>
+    <tbody>
+    {% for m in pagination.items %}
+    <tr>
+        <td>#{{ m.maintenance_id }}</td>
+        <td><a href="{{ url_for('services.detail', request_id=m.service_request.request_id) }}">#{{ m.service_request.request_id }}</a></td>
+        <td>{{ m.service_request.site.site_name }}</td>
+        <td>{{ m.technician.full_name }}</td>
+        <td>{{ m.maintenance_date.strftime('%Y-%m-%d %H:%M') if m.maintenance_date else '—' }}</td>
+        <td>{{ m.hours_worked }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty-state">No maintenance records found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div></div>
+{% include "partials/pagination.html" %}
+{% endblock %}

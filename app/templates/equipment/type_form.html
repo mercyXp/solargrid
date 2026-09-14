@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8">
+<div class="card"><div class="card-body">
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">{{ form.category.label.text }}</label>{{ form.category(class="form-select") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.manufacturer.label.text }}</label>{{ form.manufacturer(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.model_name.label.text }}</label>{{ form.model_name(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.model_number.label.text }}</label>{{ form.model_number(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.unit_price.label.text }}</label>{{ form.unit_price(class="form-control") }}</div>
+        <div class="col-md-6"><label class="form-label">{{ form.default_warranty_months.label.text }}</label>{{ form.default_warranty_months(class="form-control") }}</div>
+        <div class="col-12"><label class="form-label">{{ form.specifications.label.text }}</label>{{ form.specifications(class="form-control", rows=4) }}</div>
+    </div>
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('equipment.types_index') }}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+</div></div>
+</div></div>
+{% endblock %}

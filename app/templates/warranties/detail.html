@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "partials/status_badge.html" import status_badge %}
+{% block title %}Warranty #{{ warranty.warranty_id }}{% endblock %}
+{% block page_title %}Warranty Details{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><a href="{{ url_for('warranties.index') }}">Warranties</a> / #{{ warranty.warranty_id }}</nav>
+<div class="card"><div class="card-body">
+    <h2 class="h4 mb-3">Warranty #{{ warranty.warranty_id }} {{ status_badge(warranty.status) }}</h2>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <p class="mb-1"><strong>Equipment:</strong> {{ warranty.equipment.serial_number }}</p>
+            <p class="mb-1"><strong>Type:</strong> {{ warranty.equipment.equipment_type.manufacturer }} {{ warranty.equipment.equipment_type.model_name }}</p>
+            {% if warranty.equipment.site %}
+            <p class="mb-1"><strong>Site:</strong> <a href="{{ url_for('sites.detail', site_id=warranty.equipment.site.site_id) }}">{{ warranty.equipment.site.site_name }}</a></p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <p class="mb-1"><strong>Warranty Type:</strong> {{ warranty.warranty_type }}</p>
+            <p class="mb-1"><strong>Start Date:</strong> {{ warranty.start_date }}</p>
+            <p class="mb-1"><strong>End Date:</strong> {{ warranty.end_date }}</p>
+            {% if warranty.terms %}<p class="mb-0"><strong>Terms:</strong> {{ warranty.terms }}</p>{% endif %}
+        </div>
+    </div>
+</div></div>
+{% endblock %}

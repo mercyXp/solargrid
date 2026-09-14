@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Too Many Requests{% endblock %}
+{% block page_title %}Too Many Requests{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-muted">429</h1>
+        <p class="lead">Too Many Requests</p>
+        <p class="text-muted">Please wait a moment before trying again.</p>
+        <a href="{{ url_for('dashboard.index') if current_user else url_for('auth.login') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="card login-card shadow-sm text-center">
+        <h1 class="display-4 fw-bold text-muted">429</h1>
+        <p class="lead">Too Many Requests</p>
+        <p class="text-muted">Please wait a moment before trying again.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Back to Login</a>
+    </div>
+</div>
+{% endblock %}
