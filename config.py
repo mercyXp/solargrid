@@ -1,15 +1,49 @@
 import os
+from urllib.parse import quote_plus
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
+def _build_mysql_url(host: str) -> str:
+    user = os.environ.get("MYSQLUSER", "root")
+    password = quote_plus(os.environ.get("MYSQLPASSWORD", ""))
+    port = os.environ.get("MYSQLPORT", "3306")
+    database = os.environ.get("MYSQLDATABASE") or os.environ.get("MYSQL_DATABASE", "railway")
+    return f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+
+
+def _database_url() -> str:
+    """Resolve SQLAlchemy URI — on Railway, MYSQLHOST wins over localhost DATABASE_URL."""
+    host = os.environ.get("MYSQLHOST")
+    url = (os.environ.get("DATABASE_URL") or "").strip()
+
+    # Railway injects MYSQLHOST; ignore stale localhost DATABASE_URL from .env
+    if host:
+        if not url or "localhost" in url or "127.0.0.1" in url:
+            return _build_mysql_url(host)
+
+    if url:
+        if url.startswith("mysql://"):
+            return url.replace("mysql://", "mysql+pymysql://", 1)
+        return url
+
+    if host:
+        return _build_mysql_url(host)
+
+    mysql_url = os.environ.get("MYSQL_URL")
+    if mysql_url:
+        if mysql_url.startswith("mysql://"):
+            return mysql_url.replace("mysql://", "mysql+pymysql://", 1)
+        return mysql_url
+
+    return "mysql+pymysql://solargrid:solargrid_pass@localhost:3306/solargrid_db"
+
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-insecure-key")
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL",
-        "mysql+pymysql://solargrid:solargrid_pass@localhost:3306/solargrid_db",
-    )
+    SQLALCHEMY_DATABASE_URI = _database_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,

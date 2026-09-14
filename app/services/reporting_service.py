@@ -133,9 +133,7 @@ class ReportingService:
     def dashboard_kpis():
         return {
             "total_customers": Customer.query.count(),
-            "active_sites": db.session.query(func.count()).select_from(
-                db.session.query(Installation.site_id).distinct().subquery()
-            ).scalar() or 0,
+            "active_sites": db.session.query(func.count(func.distinct(Installation.site_id))).scalar() or 0,
             "available_equipment": Equipment.query.filter_by(status="Available").count(),
             "installed_equipment": Equipment.query.filter_by(status="Installed").count(),
             "scheduled_installations": Installation.query.filter_by(status="Scheduled").count(),
@@ -172,8 +170,8 @@ class ReportingService:
         workload = ReportingService.technician_workload()[:10]
         return {
             "monthly_revenue": revenue,
-            "installation_status": installation_status,
-            "service_priority": service_priority,
-            "equipment_status": equipment_status,
+            "installation_status": [(str(s), int(c)) for s, c in installation_status],
+            "service_priority": [(str(p), int(c)) for p, c in service_priority],
+            "equipment_status": [(str(s), int(c)) for s, c in equipment_status],
             "technician_workload": workload,
         }

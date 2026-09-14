@@ -1,4 +1,5 @@
 """Seed SolarGrid database with realistic Zambian sample data."""
+import os
 import sys
 from datetime import date, datetime, timedelta
 from decimal import Decimal
@@ -22,11 +23,15 @@ from app.models.warranty import Warranty
 from app.security.security_utils import hash_password
 
 
-def seed():
-    app = create_app("development")
+def seed(reset=False):
+    app = create_app(os.environ.get("FLASK_ENV", "development"))
     with app.app_context():
-        db.drop_all()
-        db.create_all()
+        if reset:
+            db.drop_all()
+            db.create_all()
+        elif Staff.query.count() > 0:
+            print("Database already has data — skipping seed (use reset=True to wipe).")
+            return
 
         staff_users = [
             ("admin", "Administrator", "Admin", "Mwanza", "admin@solargrid.co.zm"),
@@ -168,4 +173,9 @@ def seed():
 
 
 if __name__ == "__main__":
-    seed()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--reset", action="store_true", help="Drop and recreate all tables before seeding")
+    args = parser.parse_args()
+    seed(reset=args.reset)
