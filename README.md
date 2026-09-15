@@ -54,6 +54,12 @@ python run.py
 
 Open http://localhost:5000
 
+### 6. Run Database locally
+Open powershell as Administratornet start MYSQL80
+```bash
+net start MYSQL80
+```
+
 ### Development Credentials (after seeding)
 
 | Username | Role | Password |
