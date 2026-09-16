@@ -6,7 +6,7 @@ Based on **IT212 Database Design: Stages 1 & 2** reference specification.
 
 ## Authors
 
-This project was developed by **Jemimah**, **Lina**, **Elijah**, **Gilbert**, and **Yves**.
+This project was developed by **Jemimah**, **Lina**, **Elijah**, **Gilbert**, **Yves**, and **Mercy**.
 
 ## Stack
 
@@ -58,10 +58,20 @@ python run.py
 
 Open http://localhost:5000
 
-### 6. Run Database locally
-Open powershell as Administratornet start MYSQL80
-```bash
+### 6. Start MySQL locally
+
+Open PowerShell as Administrator:
+
+```powershell
 net start MYSQL80
+```
+
+Then apply SQL layers (views, procedures, indexes):
+
+```powershell
+mysql -u root -p solargrid_db < database\indexes.sql
+mysql -u root -p solargrid_db < database\views.sql
+mysql -u root -p solargrid_db < database\procedures.sql
 ```
 
 ### Development Credentials (after seeding)
@@ -104,9 +114,13 @@ Requires `solargrid_test_db` MySQL database (see `.env.example` TEST_DATABASE_UR
 
 ## Documentation
 
+- [Technical Report (IT212 submission)](docs/technical-report.md)
+- [Submission Checklist](docs/submission-checklist.md)
 - [Requirements](docs/requirements.md)
 - [Architecture](docs/architecture.md)
 - [Database Design](docs/database-design.md)
+- [Normalization (1NF/2NF/3NF)](docs/normalization.md)
+- [ACID Transactions](docs/acid-transactions.md)
 - [ERD](docs/erd.md)
 - [Security](docs/security.md)
 - [Traceability Matrix](docs/traceability-matrix.md)

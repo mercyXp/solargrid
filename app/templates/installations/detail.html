@@ -50,17 +50,18 @@
     <div class="col-lg-6">
         <h5 class="fw-semibold">Equipment Assignments</h5>
         <div class="card mb-3"><div class="table-responsive">
-        <table class="table mb-0"><thead><tr><th>Serial</th><th>Type</th><th>Price</th><th>Status</th></tr></thead>
+        <table class="table mb-0"><thead><tr><th>Serial</th><th>Model</th><th>Rating</th><th>Price</th><th>Status</th></tr></thead>
         <tbody>
         {% for d in installation.details %}
         <tr>
             <td>{{ d.equipment.serial_number }}</td>
             <td>{{ d.equipment.equipment_type.manufacturer }} {{ d.equipment.equipment_type.model_name }}</td>
+            <td>{% if d.equipment.equipment_type.rating %}<span class="badge bg-light text-dark border">{{ d.equipment.equipment_type.rating }}</span>{% else %}<span class="text-muted">—</span>{% endif %}</td>
             <td>{{ d.unit_price_at_install|kwacha }}</td>
             <td>{{ status_badge(d.equipment.status) }}</td>
         </tr>
         {% else %}
-        <tr><td colspan="4" class="text-muted">No equipment assigned yet.</td></tr>
+        <tr><td colspan="5" class="text-muted">No equipment assigned yet.</td></tr>
         {% endfor %}
         </tbody>
         </table></div></div>
@@ -72,7 +73,7 @@
                 <select name="equipment_id" class="form-select form-select-sm" required>
                     <option value="">Select equipment…</option>
                     {% for e in available_equipment %}
-                    <option value="{{ e.equipment_id }}">{{ e.serial_number }} — {{ e.equipment_type.manufacturer }} {{ e.equipment_type.model_name }}</option>
+                    <option value="{{ e.equipment_id }}">{{ e.serial_number }} — {{ e.equipment_type.type_label }}</option>
                     {% endfor %}
                 </select>
                 <button class="btn btn-primary btn-sm">Assign</button>

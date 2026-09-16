@@ -721,20 +721,180 @@ a { color: inherit; text-decoration: none; }
     color: var(--sg-text-secondary);
 }
 
-/* ── Steps ── */
-.landing-steps {
-    display: grid;
-    gap: 1.5rem;
-    counter-reset: step;
+/* ── How it works (redesigned) ── */
+.hiw-section {
+    background: var(--sg-bg);
 }
 
-.landing-step {
+.hiw-header {
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.hiw-header__title {
+    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+    line-height: 1.15;
+}
+
+.hiw-header__highlight {
+    color: var(--sg-yellow-dark);
+}
+
+.hiw-header__sub {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: var(--sg-text-secondary);
+    margin: 0;
+}
+
+.hiw-track {
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 1.25rem;
-    align-items: flex-start;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
 }
 
-.landing-step__num {
+.hiw-card {
+    position: relative;
+    flex: 1;
+    background: var(--sg-bg);
+    border: 1px solid var(--sg-border);
+    border-radius: 20px;
+    padding: 1.25rem 1.25rem 1.5rem;
+    box-shadow: var(--sg-shadow);
+    transition: transform 0.35s var(--sg-ease), box-shadow 0.35s var(--sg-ease);
+}
+
+.hiw-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sg-shadow-lg);
+}
+
+.hiw-card__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sg-yellow);
+    color: var(--sg-text);
+    font-weight: 800;
+    font-size: 0.9375rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(244, 196, 48, 0.4);
+}
+
+.hiw-card__visual {
+    position: relative;
+    min-height: clamp(140px, 28vw, 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.hiw-card__blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.35;
+    filter: blur(2px);
+}
+
+.hiw-card__blob--yellow {
+    width: 120px;
+    height: 120px;
+    background: rgba(244, 196, 48, 0.45);
+    top: 10%;
+    left: 15%;
+}
+
+.hiw-card__blob--green {
+    width: 100px;
+    height: 100px;
+    background: rgba(46, 125, 50, 0.25);
+    top: 20%;
+    right: 10%;
+}
+
+.hiw-card__blob--blue {
+    width: 110px;
+    height: 110px;
+    background: rgba(25, 118, 210, 0.2);
+    bottom: 10%;
+    left: 20%;
+}
+
+.hiw-card__visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--sg-border) 1px, transparent 1px);
+    background-size: 12px 12px;
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.hiw-illus {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 220px);
+    height: auto;
+}
+
+.hiw-card__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    line-height: 1.35;
+}
+
+.hiw-card__text {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--sg-text-secondary);
+    line-height: 1.55;
+}
+
+.hiw-arrow {
+    display: none;
+    flex-shrink: 0;
+    align-self: center;
+    width: 40px;
+    opacity: 0.85;
+}
+
+.hiw-arrow svg {
+    width: 100%;
+    height: auto;
+}
+
+/* Roles banner */
+.hiw-roles {
+    background: linear-gradient(135deg, rgba(244, 196, 48, 0.12), rgba(244, 196, 48, 0.06));
+    border: 1px solid rgba(244, 196, 48, 0.25);
+    border-radius: 20px;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.hiw-roles__intro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(244, 196, 48, 0.2);
+}
+
+.hiw-roles__icon {
     flex-shrink: 0;
     width: 48px;
     height: 48px;
@@ -742,37 +902,61 @@ a { color: inherit; text-decoration: none; }
     align-items: center;
     justify-content: center;
     background: var(--sg-yellow);
-    font-weight: 800;
-    font-size: 1.125rem;
-    border-radius: var(--sg-radius);
+    border-radius: 50%;
+    color: var(--sg-text);
 }
 
-.landing-step__title {
+.hiw-roles__icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.hiw-roles__heading {
     font-weight: 700;
     font-size: 1.0625rem;
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.15rem;
 }
 
-.landing-step__text {
+.hiw-roles__tagline {
     margin: 0;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     color: var(--sg-text-secondary);
 }
 
-.landing-roles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
+.hiw-roles__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 0.75rem;
 }
 
-.landing-role {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    background: var(--sg-bg);
-    border: 1px solid var(--sg-border);
-    border-radius: 999px;
+.hiw-role-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.hiw-role-item__icon {
+    width: 28px;
+    height: 28px;
+    color: var(--sg-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hiw-role-item__icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.hiw-role-item__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--sg-text-secondary);
+    line-height: 1.25;
+    max-width: 88px;
 }
 
 /* ── Security ── */
@@ -1078,6 +1262,7 @@ a { color: inherit; text-decoration: none; }
     .landing-team { grid-template-columns: repeat(2, 1fr); padding-top: 3rem; }
     .landing-security__grid { grid-template-columns: repeat(2, 1fr); }
     .browser-mock__kpis { grid-template-columns: repeat(4, 1fr); }
+    .hiw-roles__grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (min-width: 768px) {
@@ -1096,8 +1281,45 @@ a { color: inherit; text-decoration: none; }
     .landing-pillars { grid-template-columns: repeat(4, 1fr); }
     .landing-audience { grid-template-columns: repeat(3, 1fr); }
     .landing-team { grid-template-columns: repeat(3, 1fr); }
-    .landing-steps { grid-template-columns: repeat(3, 1fr); }
-    .landing-step { flex-direction: column; }
+    .hiw-track {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .hiw-arrow {
+        display: flex;
+    }
+
+    .hiw-roles__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .hiw-roles__intro {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        flex: 0 0 auto;
+        min-width: 200px;
+    }
+
+    .hiw-roles {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        padding: 1.5rem 2rem;
+    }
+
+    .hiw-roles__grid {
+        flex: 1;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0.5rem;
+    }
+
+    .hiw-role-item__label {
+        font-size: 0.75rem;
+        max-width: none;
+    }
 }
 
 /* ── Reduced motion ── */

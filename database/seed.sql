@@ -1,11 +1,25 @@
--- SolarGrid sample data reference
--- Prefer: python scripts/seed_database.py (handles bcrypt hashing)
--- Use this file for MySQL Workbench reference after schema is created.
+-- SolarGrid — Sample Data
+--
+-- Realistic Zambian sample data is loaded via Python seeder (recommended):
+--   python scripts/seed_database.py
+--
+-- Record counts after seeding (minimum IT212 demonstration):
+--   staff .............. 8   (one per role)
+--   customer ........... 12
+--   site ............... 12
+--   equipment_type ..... 3
+--   equipment .......... 15+
+--   technician ......... 5
+--   installation ....... 10+
+--   service_request .... 10+
+--   invoice ............ 10+
+--   payment ............ 5+
+--   warranty ........... 5+
+--
+-- Password for all seed staff users: SolarGrid2026! (development only)
 
-USE solargrid_db;
-
--- After running seed_database.py, verify with:
--- SELECT role, username FROM staff;
--- SELECT COUNT(*) FROM customer;
--- SELECT COUNT(*) FROM equipment;
--- SELECT COUNT(*) FROM installation;
+-- To verify counts:
+-- SELECT 'customer' AS tbl, COUNT(*) FROM customer
+-- UNION ALL SELECT 'site', COUNT(*) FROM site
+-- UNION ALL SELECT 'equipment', COUNT(*) FROM equipment
+-- UNION ALL SELECT 'installation', COUNT(*) FROM installation;

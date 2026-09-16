@@ -26,6 +26,7 @@ class EquipmentType(db.Model):
     )
     manufacturer = db.Column(db.String(100), nullable=False)
     model_name = db.Column(db.String(100), nullable=False)
+    rating = db.Column(db.String(50), nullable=True)
     model_number = db.Column(db.String(50), nullable=True)
     specifications = db.Column(db.Text, nullable=True)
     unit_price = db.Column(db.Numeric(12, 2), nullable=False)
@@ -33,6 +34,12 @@ class EquipmentType(db.Model):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     equipment_items = db.relationship("Equipment", back_populates="equipment_type", lazy="dynamic")
+
+    @property
+    def type_label(self) -> str:
+        """Manufacturer, model name, and power/capacity rating for lists and dropdowns."""
+        base = f"{self.manufacturer} {self.model_name}"
+        return f"{base} ({self.rating})" if self.rating else base
 
     def __repr__(self):
         return f"<EquipmentType {self.model_name}>"

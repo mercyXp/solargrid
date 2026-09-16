@@ -10,6 +10,11 @@
         <div class="col-md-6"><label class="form-label">{{ form.category.label.text }}</label>{{ form.category(class="form-select") }}</div>
         <div class="col-md-6"><label class="form-label">{{ form.manufacturer.label.text }}</label>{{ form.manufacturer(class="form-control") }}</div>
         <div class="col-md-6"><label class="form-label">{{ form.model_name.label.text }}</label>{{ form.model_name(class="form-control") }}</div>
+        <div class="col-md-6">
+            <label class="form-label">{{ form.rating.label.text }}</label>
+            {{ form.rating(class="form-control", placeholder="e.g. 400W, 5 kW, 13.5 kWh") }}
+            <div class="form-text">Power or capacity, e.g. 400W, 5 kW, 13.5 kWh</div>
+        </div>
         <div class="col-md-6"><label class="form-label">{{ form.model_number.label.text }}</label>{{ form.model_number(class="form-control") }}</div>
         <div class="col-md-6"><label class="form-label">{{ form.unit_price.label.text }}</label>{{ form.unit_price(class="form-control") }}</div>
         <div class="col-md-6"><label class="form-label">{{ form.default_warranty_months.label.text }}</label>{{ form.default_warranty_months(class="form-control") }}</div>

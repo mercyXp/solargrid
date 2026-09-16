@@ -32,6 +32,7 @@ class EquipmentTypeForm(FlaskForm):
     )
     manufacturer = StringField("Manufacturer", validators=[DataRequired(), Length(max=100)])
     model_name = StringField("Model Name", validators=[DataRequired(), Length(max=100)])
+    rating = StringField("Rating", validators=[DataRequired(), Length(max=50)])
     model_number = StringField("Model Number", validators=[Optional(), Length(max=50)])
     specifications = TextAreaField("Specifications", validators=[Optional()])
     unit_price = DecimalField("Unit Price (ZMK)", validators=[DataRequired()], places=2)
@@ -76,6 +77,7 @@ def type_create():
             category=form.category.data,
             manufacturer=form.manufacturer.data,
             model_name=form.model_name.data,
+            rating=form.rating.data.strip(),
             model_number=form.model_number.data or None,
             specifications=form.specifications.data,
             unit_price=form.unit_price.data,
@@ -103,6 +105,7 @@ def index():
                 Equipment.serial_number.ilike(like),
                 EquipmentType.manufacturer.ilike(like),
                 EquipmentType.model_name.ilike(like),
+                EquipmentType.rating.ilike(like),
             )
         )
     if status:
@@ -121,7 +124,9 @@ def index():
 @permission_required(Permission.MANAGE_EQUIPMENT)
 def create():
     form = EquipmentForm()
-    form.equipment_type_id.choices = [(t.equipment_type_id, f"{t.manufacturer} {t.model_name}") for t in EquipmentType.query.filter_by(is_active=True).all()]
+    form.equipment_type_id.choices = [
+        (t.equipment_type_id, t.type_label) for t in EquipmentType.query.filter_by(is_active=True).all()
+    ]
     form.site_id.choices = [(0, "— Warehouse —")] + [(s.site_id, s.site_name) for s in Site.query.all()]
     if form.validate_on_submit():
         eq = Equipment(

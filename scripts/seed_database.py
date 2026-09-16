@@ -61,6 +61,15 @@ def seed(reset=False):
             ("Joseph", "Banda", None, "joseph.banda@email.co.zm", "0977123456", "Plot 234, Kabulonga, Lusaka", "Individual"),
             ("Mwamba", "Farms", "Mwamba Farms Ltd", "info@mwambafarms.co.zm", "0966789012", "Farm Block 12, Chisamba", "Business"),
             ("Eastern", "Province School", "Eastern Province Education Board", "admin@epeducation.gov.zm", "0976543210", "Chipata Central, Eastern Province", "Government"),
+            ("Grace", "Phiri", None, "grace.phiri@email.co.zm", "0977111222", "Woodlands, Lusaka", "Individual"),
+            ("Copperbelt", "Traders", "Copperbelt Traders Ltd", "sales@copperbelt.co.zm", "0966123456", "Ndola Industrial, Copperbelt", "Business"),
+            ("Choma", "Secondary", "Choma Secondary School", "admin@chomasec.edu.zm", "0977333444", "Choma, Southern", "Government"),
+            ("Kabwe", "Clinic", "Kabwe Community Clinic", "info@kabweclinic.co.zm", "0966555666", "Kabwe Central", "NGO"),
+            ("Livingstone", "Hotel", "Livingstone View Hotel", "ops@lvhotel.co.zm", "0977888999", "Livingstone", "Business"),
+            ("Monica", "Zulu", None, "monica.zulu@email.co.zm", "0966777888", "Matero, Lusaka", "Individual"),
+            ("Northern", "Farm Co-op", "Northern Farm Cooperative", "coop@northfarm.co.zm", "0977999000", "Kasama, Northern", "Business"),
+            ("Petro", "Mukuka", None, "petro.m@email.co.zm", "0966111222", "Kitwe, Copperbelt", "Individual"),
+            ("Solwezi", "Mine Site", "Solwezi Mining Services", "site@solwezimine.co.zm", "0977444555", "Solwezi, North-Western", "Business"),
         ]
         customers = []
         for fn, ln, co, em, ph, ad, ct in customers_data:
@@ -74,6 +83,15 @@ def seed(reset=False):
             (customers[0], "Kabulonga Home", "Plot 234, Kabulonga", "Lusaka", "Lusaka", "10101", "Household"),
             (customers[1], "Chisamba Main Farm", "Farm Block 12", "Chisamba", "Central", "10102", "Farm"),
             (customers[2], "Chipata School Campus", "School Road, Chipata", "Chipata", "Eastern", "10103", "School"),
+            (customers[3], "Woodlands Residence", "Woodlands Phase 2", "Lusaka", "Lusaka", "10104", "Household"),
+            (customers[4], "Ndola Warehouse", "Ndola Industrial Park", "Ndola", "Copperbelt", "10105", "Business"),
+            (customers[5], "Choma Campus", "School Road", "Choma", "Southern", "10106", "School"),
+            (customers[6], "Kabwe Clinic Main", "Central Kabwe", "Kabwe", "Central", "10107", "Government"),
+            (customers[7], "Livingstone Hotel Block", "Mosi-oa-Tunya Road", "Livingstone", "Southern", "10108", "Business"),
+            (customers[8], "Matero Home", "Matero East", "Lusaka", "Lusaka", "10109", "Household"),
+            (customers[9], "Kasama Co-op Store", "Kasama Central", "Kasama", "Northern", "10110", "Farm"),
+            (customers[10], "Kitwe Residence", "Nkana East", "Kitwe", "Copperbelt", "10111", "Household"),
+            (customers[11], "Solwezi Mine Camp", "Mine Road", "Solwezi", "North-Western", "10112", "Business"),
         ]
         for cust, name, addr, city, prov, pc, st in site_data:
             s = Site(customer_id=cust.customer_id, site_name=name, address=addr, city=city, province=prov, postal_code=pc, site_type=st)
@@ -83,12 +101,20 @@ def seed(reset=False):
 
         types = []
         type_data = [
-            ("Solar Panel", "SunPower", "Maxeon 3 400W", "SP-400", Decimal("4500.00"), 120),
-            ("Inverter", "SMA", "Sunny Boy 5.0", "SB-5.0", Decimal("18500.00"), 60),
-            ("Battery", "Tesla", "Powerwall 2", "PW2", Decimal("95000.00"), 120),
+            ("Solar Panel", "SunPower", "Maxeon 3", "400W", "SP-400", Decimal("4500.00"), 120),
+            ("Inverter", "SMA", "Sunny Boy 5.0", "5 kW", "SB-5.0", Decimal("18500.00"), 60),
+            ("Battery", "Tesla", "Powerwall 2", "13.5 kWh", "PW2", Decimal("95000.00"), 120),
         ]
-        for cat, mfr, model, mn, price, months in type_data:
-            et = EquipmentType(category=cat, manufacturer=mfr, model_name=model, model_number=mn, unit_price=price, default_warranty_months=months)
+        for cat, mfr, model, rating, mn, price, months in type_data:
+            et = EquipmentType(
+                category=cat,
+                manufacturer=mfr,
+                model_name=model,
+                rating=rating,
+                model_number=mn,
+                unit_price=price,
+                default_warranty_months=months,
+            )
             db.session.add(et)
             types.append(et)
         db.session.flush()
@@ -112,6 +138,8 @@ def seed(reset=False):
             ("Patrick", "Mbewe", "patrick.m@solargrid.co.zm", "Solar Panels"),
             ("Beatrice", "Mukuka", "beatrice.m@solargrid.co.zm", "Inverter Systems"),
             ("John", "Chilufya", "john.c@solargrid.co.zm", "Battery Storage"),
+            ("Sarah", "Banda", "sarah.b@solargrid.co.zm", "General Installations"),
+            ("David", "Tembo", "david.t@solargrid.co.zm", "Maintenance"),
         ]:
             t = Technician(first_name=fn, last_name=ln, email=em, phone="0977000001", specialisation=spec, hire_date=date(2024, 1, 15))
             db.session.add(t)
@@ -164,8 +192,90 @@ def seed(reset=False):
         db.session.flush()
         db.session.add(Payment(invoice_id=inv1.invoice_id, payment_date=datetime.utcnow() - timedelta(days=30), amount=Decimal("30000.00"), payment_method="EFT", reference_number="ZANACO-001", status="Confirmed", recorded_by=staff_map["finance"].staff_id))
 
+        # Additional transactional data (IT212: 10+ records per major table)
+        statuses = ["Scheduled", "In Progress", "Completed", "Scheduled", "In Progress"]
+        for idx, site in enumerate(sites[3:11], start=4):
+            inst = Installation(
+                site_id=site.site_id,
+                planned_date=date.today() - timedelta(days=idx * 3),
+                status=statuses[idx % len(statuses)],
+                created_by=staff_map["opsmgr"].staff_id,
+            )
+            if inst.status == "In Progress":
+                inst.actual_start_date = date.today() - timedelta(days=idx)
+            if inst.status == "Completed":
+                inst.actual_start_date = date.today() - timedelta(days=idx + 5)
+                inst.completion_date = date.today() - timedelta(days=idx)
+            db.session.add(inst)
+        db.session.flush()
+
+        for idx, site in enumerate(sites[:10], start=1):
+            sr = ServiceRequest(
+                site_id=site.site_id,
+                reported_by=staff_map["customersvc"].staff_id,
+                description=f"Service request #{idx:02d} — routine check or reported fault",
+                priority=["Low", "Medium", "High", "Critical"][idx % 4],
+                status=["Open", "In Progress", "Resolved", "Open"][idx % 4],
+            )
+            db.session.add(sr)
+        db.session.flush()
+
+        for idx, cust in enumerate(customers[:10], start=3):
+            total = Decimal(str(15000 + idx * 3500))
+            status = ["Issued", "Partially Paid", "Paid", "Overdue"][idx % 4]
+            if status == "Paid":
+                paid = total
+            elif status == "Partially Paid":
+                paid = total / 2
+            else:
+                paid = Decimal("0")
+            due = (
+                date.today() - timedelta(days=5)
+                if status == "Overdue"
+                else date.today() + timedelta(days=max(7, 30 - idx))
+            )
+            inv = Invoice(
+                invoice_number=f"INV-2026-{idx:04d}",
+                customer_id=cust.customer_id,
+                date_issued=date.today() - timedelta(days=idx * 5),
+                due_date=due,
+                total_amount=total,
+                amount_paid=paid,
+                status=status,
+                created_by=staff_map["finance"].staff_id,
+            )
+            db.session.add(inv)
+        db.session.flush()
+
+        for idx in range(4, 9):
+            inv = Invoice.query.filter_by(invoice_number=f"INV-2026-{idx:04d}").first()
+            if inv and inv.amount_paid > 0:
+                db.session.add(
+                    Payment(
+                        invoice_id=inv.invoice_id,
+                        payment_date=datetime.utcnow() - timedelta(days=idx * 2),
+                        amount=inv.amount_paid,
+                        payment_method="EFT",
+                        reference_number=f"ZANACO-{idx:03d}",
+                        status="Confirmed",
+                        recorded_by=staff_map["finance"].staff_id,
+                    )
+                )
+
+        for eq in equipment_items[3:8]:
+            db.session.add(
+                Warranty(
+                    equipment_id=eq.equipment_id,
+                    start_date=date.today() - timedelta(days=120),
+                    end_date=date.today() + timedelta(days=900),
+                    warranty_type="Manufacturer",
+                    status="Active",
+                )
+            )
+
         db.session.commit()
         print("Database seeded successfully with Zambian sample data.")
+        print("Record counts: customers=12, sites=12, equipment=15, technicians=5, + installations/service/invoices")
         print("\nDevelopment credentials (all roles):")
         print("  Password: SolarGrid2026!")
         for username, role, *_ in staff_users:
