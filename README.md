@@ -4,6 +4,10 @@ Production-quality Flask web application for managing solar installation operati
 
 Based on **IT212 Database Design: Stages 1 & 2** reference specification.
 
+## Authors
+
+This project was developed by **Jemimah**, **Lina**, **Elijah**, **Gilbert**, and **Yves**.
+
 ## Stack
 
 - **Backend:** Python Flask (application factory, blueprints)
