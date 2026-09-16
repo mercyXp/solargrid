@@ -52,6 +52,7 @@ def _configure_logging(app):
 def _register_blueprints(app):
     from app.routes.audit import audit_bp
     from app.routes.auth import auth_bp
+    from app.routes.landing import landing_bp
     from app.routes.customers import customers_bp
     from app.routes.dashboard import dashboard_bp
     from app.routes.equipment import equipment_bp
@@ -66,6 +67,7 @@ def _register_blueprints(app):
     from app.routes.technicians import technicians_bp
     from app.routes.warranties import warranties_bp
 
+    app.register_blueprint(landing_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(customers_bp)

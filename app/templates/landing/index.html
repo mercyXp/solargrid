@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarGrid Energy Solutions — Solar Installation Operations Management</title>
+    <meta name="description" content="SolarGrid is the management system for solar installation operations in Zambia — customers, equipment, installations, service, invoices, and reports in one place.">
+    <meta property="og:title" content="SolarGrid Energy Solutions">
+    <meta property="og:description" content="Run your solar installs from first quote to final payment. Customers, stock, service, and finance in one system.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body class="landing-page">
+
+<!-- ── Navigation ── -->
+<header class="landing-nav" role="banner">
+    <div class="landing-container landing-nav__inner">
+        <a href="#" class="landing-nav__logo" aria-label="SolarGrid home">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="SolarGrid Energy Solutions logo" width="160" height="44">
+        </a>
+        <nav aria-label="Main navigation">
+            <ul class="landing-nav__links">
+                <li><a href="#product" class="landing-nav__link">Product</a></li>
+                <li><a href="#how-it-works" class="landing-nav__link">How it works</a></li>
+                <li><a href="#who-its-for" class="landing-nav__link">Who it's for</a></li>
+                <li><a href="#team" class="landing-nav__link">Team</a></li>
+                <li><a href="#contact" class="landing-nav__link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="landing-nav__actions">
+            <a href="#contact" class="sg-btn sg-btn--primary">Request demo</a>
+            <button class="landing-nav__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+    <div class="landing-nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+        <ul>
+            <li><a href="#product">Product</a></li>
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#who-its-for">Who it's for</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+            <li><a href="#contact" class="sg-btn sg-btn--primary" style="margin-top:0.5rem;display:inline-flex;">Request demo</a></li>
+        </ul>
+    </div>
+</header>
+
+<main>
+    <!-- ── Hero ── -->
+    <section class="landing-hero" id="top" aria-labelledby="hero-heading">
+        <div class="landing-hero__glow" aria-hidden="true"></div>
+        <div class="landing-hero__rays" aria-hidden="true"></div>
+        <div class="landing-container landing-hero__grid">
+            <div class="landing-hero__content">
+                <h1 id="hero-heading" class="landing-hero__headline hero-enter" data-hero-order="1">
+                    Run your solar installs from first quote to <span class="highlight">final payment</span>.
+                </h1>
+                <p class="landing-hero__sub hero-enter" data-hero-order="2">
+                    SolarGrid is the management system for solar installation operations — customers, sites, equipment, installations, service, and finance in one place.
+                </p>
+                <div class="landing-hero__ctas hero-enter" data-hero-order="3">
+                    <a href="#contact" class="sg-btn sg-btn--primary">Request a demo</a>
+                    <a href="#product" class="sg-btn sg-btn--secondary">See how it works</a>
+                </div>
+                <div class="landing-hero__chips hero-enter" data-hero-order="4">
+                    <span class="landing-chip">Role-based access</span>
+                    <span class="landing-chip">Audit trail</span>
+                    <span class="landing-chip">ZMW billing</span>
+                </div>
+            </div>
+
+            <div class="hero-mock" aria-hidden="true">
+                <div class="browser-mock">
+                    <div class="browser-mock__bar">
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__url">app.solargrid.co.zm/dashboard</span>
+                    </div>
+                    <div class="browser-mock__body">
+                        <aside class="browser-mock__sidebar">
+                            <div class="browser-mock__brand">Solar<span>Grid</span></div>
+                            <div class="browser-mock__nav-item is-active">Dashboard</div>
+                            <div class="browser-mock__nav-item">Customers</div>
+                            <div class="browser-mock__nav-item">Installations</div>
+                            <div class="browser-mock__nav-item">Invoices</div>
+                            <div class="browser-mock__nav-item">Reports</div>
+                        </aside>
+                        <div class="browser-mock__main">
+                            <div class="browser-mock__title">Dashboard</div>
+                            <div class="browser-mock__kpis">
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val" data-count="248">0</div>
+                                    <div class="browser-mock__kpi-label">Customers</div>
+                                </div>
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val" data-count="186">0</div>
+                                    <div class="browser-mock__kpi-label">Sites</div>
+                                </div>
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val" data-count="412">0</div>
+                                    <div class="browser-mock__kpi-label">Equipment</div>
+                                </div>
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val is-revenue" data-count="2840000" data-currency="true">K 0</div>
+                                    <div class="browser-mock__kpi-label">Revenue</div>
+                                </div>
+                            </div>
+                            <div class="browser-mock__chart">
+                                <svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+                                    <polyline class="chart-line" fill="none" stroke="#F4C430" stroke-width="2.5"
+                                        points="0,50 25,42 50,38 75,28 100,32 125,18 150,22 175,10 200,14"/>
+                                    <polyline fill="none" stroke="#DEE2E6" stroke-width="1"
+                                        points="0,50 25,42 50,38 75,28 100,32 125,18 150,22 175,10 200,14" opacity="0.3"/>
+                                </svg>
+                            </div>
+                            <div class="browser-mock__alerts">
+                                <div class="browser-mock__alert">⚠ 3 overdue invoices</div>
+                                <div class="browser-mock__alert">⚠ 2 critical service requests</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Problem ── -->
+    <section class="landing-section landing-section--alt" aria-labelledby="problem-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">The problem</p>
+            <h2 id="problem-heading" class="landing-section__title reveal">Spreadsheets don't run a solar company</h2>
+            <div class="landing-cards landing-cards--3 stagger">
+                <article class="landing-card">
+                    <div class="landing-card__icon" aria-hidden="true">📦</div>
+                    <h3 class="landing-card__title">Equipment conflicts</h3>
+                    <p class="landing-card__text">Equipment reserved for one job shows up on another site.</p>
+                </article>
+                <article class="landing-card">
+                    <div class="landing-card__icon" aria-hidden="true">⚡</div>
+                    <h3 class="landing-card__title">Installation gaps</h3>
+                    <p class="landing-card__text">Installations marked "done" but warranties and stock never update.</p>
+                </article>
+                <article class="landing-card">
+                    <div class="landing-card__icon" aria-hidden="true">💰</div>
+                    <h3 class="landing-card__title">Finance disconnect</h3>
+                    <p class="landing-card__text">Finance chases payments with no link to the install or service record.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Solution ── -->
+    <section class="landing-section" aria-labelledby="solution-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">The solution</p>
+            <h2 id="solution-heading" class="landing-section__title reveal">One system from customer to payment</h2>
+            <p class="landing-section__lead reveal">Every financial change and status update is tied to a staff account and logged for review.</p>
+            <div class="landing-pillars stagger">
+                <div class="landing-pillar">
+                    <div class="landing-pillar__num">1</div>
+                    <h3 class="landing-pillar__title">Customers &amp; sites</h3>
+                    <p class="landing-pillar__text">Individuals, businesses, and government customers mapped to physical locations across Zambia.</p>
+                </div>
+                <div class="landing-pillar">
+                    <div class="landing-pillar__num">2</div>
+                    <h3 class="landing-pillar__title">Equipment &amp; warehouse</h3>
+                    <p class="landing-pillar__text">Types, serials, and status rules from Available → Installed.</p>
+                </div>
+                <div class="landing-pillar">
+                    <div class="landing-pillar__num">3</div>
+                    <h3 class="landing-pillar__title">Installations &amp; service</h3>
+                    <p class="landing-pillar__text">Schedule, assign technicians, complete installs, and log maintenance.</p>
+                </div>
+                <div class="landing-pillar">
+                    <div class="landing-pillar__num">4</div>
+                    <h3 class="landing-pillar__title">Finance &amp; oversight</h3>
+                    <p class="landing-pillar__text">Invoices, payments, reports, and read-only auditor access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Product tour ── -->
+    <section class="landing-section landing-section--alt" id="product" aria-labelledby="product-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">Product</p>
+            <h2 id="product-heading" class="landing-section__title reveal">Built around real install workflows</h2>
+            <p class="landing-section__lead reveal">Not a generic CRM — the modules your team uses every day.</p>
+
+            <div class="landing-tour reveal-scale">
+                <div>
+                    <div class="landing-tour__features">
+                        <span class="landing-feature-tag">Dashboard</span>
+                        <span class="landing-feature-tag">Customers</span>
+                        <span class="landing-feature-tag">Sites</span>
+                        <span class="landing-feature-tag">Equipment</span>
+                        <span class="landing-feature-tag">Installations</span>
+                        <span class="landing-feature-tag">Service Requests</span>
+                        <span class="landing-feature-tag">Invoices</span>
+                        <span class="landing-feature-tag">Payments</span>
+                        <span class="landing-feature-tag">Reports</span>
+                    </div>
+                    <blockquote class="landing-flow reveal" style="margin-top:1.5rem;font-style:normal;border:none;margin-left:0;padding:0;">
+                        <p class="landing-flow__step"><strong>Complete an install once</strong></p>
+                        <div class="landing-flow__arrow">↓</div>
+                        <p class="landing-flow__step">Installation marked Completed</p>
+                        <div class="landing-flow__arrow">↓</div>
+                        <p class="landing-flow__step">Equipment updated + warranty created — or nothing changes</p>
+                    </blockquote>
+                </div>
+                <div class="browser-mock reveal-scale">
+                    <div class="browser-mock__bar">
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__dot"></span>
+                        <span class="browser-mock__url">Installations — #1042</span>
+                    </div>
+                    <div class="browser-mock__body">
+                        <aside class="browser-mock__sidebar">
+                            <div class="browser-mock__brand">Solar<span>Grid</span></div>
+                            <div class="browser-mock__nav-item">Dashboard</div>
+                            <div class="browser-mock__nav-item is-active">Installations</div>
+                            <div class="browser-mock__nav-item">Equipment</div>
+                            <div class="browser-mock__nav-item">Warranties</div>
+                        </aside>
+                        <div class="browser-mock__main">
+                            <div class="browser-mock__title">Installation #1042 — Chipata School</div>
+                            <div style="font-size:0.65rem;color:#6C757D;margin-bottom:0.5rem;">Status: <strong style="color:#2E7D32;">Completed</strong> · K 450,000 invoiced</div>
+                            <div class="browser-mock__kpis" style="grid-template-columns:1fr 1fr;">
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val" style="font-size:0.8rem;">SP-400 × 12</div>
+                                    <div class="browser-mock__kpi-label">Panels linked</div>
+                                </div>
+                                <div class="browser-mock__kpi">
+                                    <div class="browser-mock__kpi-val" style="font-size:0.8rem;">3 yrs</div>
+                                    <div class="browser-mock__kpi-label">Warranty active</div>
+                                </div>
+                            </div>
+                            <div style="font-size:0.65rem;padding:0.5rem;background:#E8F5E9;border-radius:8px;color:#2E7D32;font-weight:600;">
+                                ✓ Atomic completion — stock, status, and warranty updated together
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Who it's for ── -->
+    <section class="landing-section" id="who-its-for" aria-labelledby="audience-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">Who it's for</p>
+            <h2 id="audience-heading" class="landing-section__title reveal">Solar installation &amp; maintenance businesses</h2>
+            <p class="landing-section__lead reveal">Serving households, institutions, and businesses across Zambia.</p>
+            <div class="landing-audience stagger">
+                <div class="landing-audience__item">
+                    <strong>Households</strong>
+                    <p>Track home sites, scheduled installs, and warranty coverage per unit.</p>
+                </div>
+                <div class="landing-audience__item">
+                    <strong>Schools</strong>
+                    <p>Track campus sites, installation schedules, and warranty coverage per unit.</p>
+                </div>
+                <div class="landing-audience__item">
+                    <strong>Farms</strong>
+                    <p>Manage remote farm sites, equipment serials, and service history.</p>
+                </div>
+                <div class="landing-audience__item">
+                    <strong>Small businesses</strong>
+                    <p>From quote to invoice — one record for every commercial install.</p>
+                </div>
+                <div class="landing-audience__item">
+                    <strong>Rural electrification</strong>
+                    <p>Coordinate multi-site projects with technician assignments and reporting.</p>
+                </div>
+                <div class="landing-audience__item">
+                    <strong>Other</strong>
+                    <p>Any solar company that needs customers, stock, installs, and billing connected.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How it works ── -->
+    <section class="landing-section landing-section--alt" id="how-it-works" aria-labelledby="steps-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">How it works</p>
+            <h2 id="steps-heading" class="landing-section__title reveal">Up and running in three steps</h2>
+            <div class="landing-steps stagger">
+                <div class="landing-step">
+                    <div class="landing-step__num">1</div>
+                    <div>
+                        <h3 class="landing-step__title">Set up the company</h3>
+                        <p class="landing-step__text">Admin creates staff accounts and assigns roles — Sales Rep, Operations Manager, Finance Officer, and more.</p>
+                    </div>
+                </div>
+                <div class="landing-step">
+                    <div class="landing-step__num">2</div>
+                    <div>
+                        <h3 class="landing-step__title">Register customers, sites &amp; equipment</h3>
+                        <p class="landing-step__text">Warehouse loads stock. Operations schedules installations and assigns field technicians.</p>
+                    </div>
+                </div>
+                <div class="landing-step">
+                    <div class="landing-step__num">3</div>
+                    <div>
+                        <h3 class="landing-step__title">Run operations daily</h3>
+                        <p class="landing-step__text">Install, log service, invoice, collect payment, and run reports — all linked to the same records.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="reveal" style="margin-top:2rem;font-size:0.9375rem;color:var(--sg-text-secondary);">
+                <strong>Staff</strong> are login users with roles. <strong>Technicians</strong> are field profiles. A person can exist in both.
+            </p>
+            <div class="landing-roles reveal">
+                <span class="landing-role">Administrator</span>
+                <span class="landing-role">Sales Rep</span>
+                <span class="landing-role">Operations Manager</span>
+                <span class="landing-role">Technician</span>
+                <span class="landing-role">Warehouse Clerk</span>
+                <span class="landing-role">Customer Service</span>
+                <span class="landing-role">Finance Officer</span>
+                <span class="landing-role">Auditor</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Trust / Security ── -->
+    <section class="landing-section landing-section--dark" aria-labelledby="security-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal" style="color:var(--sg-yellow);">Trust &amp; security</p>
+            <h2 id="security-heading" class="landing-section__title reveal">Built for accountability</h2>
+            <p class="landing-section__lead reveal">Operational changes are traceable. Financial updates are atomic. Auditors can review without editing.</p>
+            <div class="landing-security__grid stagger">
+                <div class="landing-security__item">Passwords hashed with bcrypt</div>
+                <div class="landing-security__item">Role-based access on every protected route</div>
+                <div class="landing-security__item">CSRF protection on forms</div>
+                <div class="landing-security__item">Rate limiting on login</div>
+                <div class="landing-security__item">Audit logging for accountability</div>
+                <div class="landing-security__item">Atomic transactions — rollback on failure</div>
+                <div class="landing-security__item">Auditor role: read-only compliance review</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Team ── -->
+    <section class="landing-section landing-section--alt" id="team" aria-labelledby="team-heading">
+        <div class="landing-container">
+            <p class="landing-kicker reveal">The team</p>
+            <h2 id="team-heading" class="landing-section__title reveal">The people who built SolarGrid</h2>
+            <p class="landing-section__lead reveal">
+                SolarGrid was built as an IT212 database design project — a focused operations system for solar companies in Zambia, by a team that cared about getting installs, stock, and billing right.
+            </p>
+            <div class="landing-team">
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">J</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Jemimah</h3>
+                    <p class="landing-team-card__role">[Role — to be confirmed]</p>
+                    <p class="landing-team-card__student">127-XXX</p>
+                </article>
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">L</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Lina</h3>
+                    <p class="landing-team-card__role">[Role — to be confirmed]</p>
+                    <p class="landing-team-card__student">127-XXX</p>
+                </article>
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">E</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Elijah</h3>
+                    <p class="landing-team-card__role">[Role — to be confirmed]</p>
+                    <p class="landing-team-card__student">127-XXX</p>
+                </article>
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">G</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Gilbert</h3>
+                    <p class="landing-team-card__role">[Role — to be confirmed]</p>
+                    <p class="landing-team-card__student">127-XXX</p>
+                </article>
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">Y</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Yves</h3>
+                    <p class="landing-team-card__role">[Role — to be confirmed]</p>
+                    <p class="landing-team-card__student">127-XXX</p>
+                </article>
+                <article class="landing-team-card">
+                    <div class="landing-team-card__photo-frame">
+                        <div class="landing-team-card__photo">
+                            <span class="landing-team-card__initials" aria-hidden="true">M</span>
+                        </div>
+                    </div>
+                    <h3 class="landing-team-card__name">Mercy</h3>
+                    <p class="landing-team-card__role">Technical Lead</p>
+                    <p class="landing-team-card__student">127-813</p>
+                </article>
+            </div>
+            <p class="reveal" style="text-align:center;margin-top:2rem;color:var(--sg-text-secondary);">
+                Questions? Write to the team at <a href="mailto:contact@solargrid.co.zm" style="color:var(--sg-yellow-dark);font-weight:600;">contact@solargrid.co.zm</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ── Final CTA ── -->
+    <section class="landing-cta-final" id="contact" aria-labelledby="cta-heading">
+        <div class="landing-cta-final__glow" aria-hidden="true"></div>
+        <div class="landing-container landing-cta-final__inner reveal">
+            <h2 id="cta-heading">Put SolarGrid behind your install team.</h2>
+            <p>Customers, equipment, installs, service, invoices — one system.</p>
+            <a href="mailto:contact@solargrid.co.zm?subject=SolarGrid%20Demo%20Request" class="sg-btn sg-btn--primary">Request a demo</a>
+            <p class="landing-cta-final__note">Built for Zambian solar operations. Roles for every desk and field role.</p>
+        </div>
+    </section>
+</main>
+
+<!-- ── Footer ── -->
+<footer class="landing-footer" role="contentinfo">
+    <div class="landing-container">
+        <div class="landing-footer__grid">
+            <div class="landing-footer__brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="SolarGrid Energy Solutions">
+                <p>SolarGrid is the management system for solar installation operations — customers, stock, installs, service, and finance in one place.</p>
+            </div>
+            <div class="landing-footer__links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#product">Features</a></li>
+                    <li><a href="#how-it-works">How it works</a></li>
+                    <li><a href="#who-its-for">Who it's for</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+                </ul>
+            </div>
+            <div class="landing-footer__links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="mailto:contact@solargrid.co.zm">contact@solargrid.co.zm</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="landing-footer__bottom">
+            <span>&copy; {{ current_year }} SolarGrid Energy Solutions. All rights reserved.</span>
+            <span>Developed for IT212 Database Design — Stages 1 &amp; 2.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+</body>
+</html>
