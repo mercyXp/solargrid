@@ -17,74 +17,28 @@ This project was developed by **Jemimah**, **Lina**, **Elijah**, **Gilbert**, **
 
 ## Quick Start
 
-### 1. Prerequisites
+**New to programming?** Start here: [docs/beginner-setup.md](docs/beginner-setup.md)  
+**Already have Python/MySQL?** [docs/quick-start.md](docs/quick-start.md)
 
-- Python 3.11+
-- MySQL 8.x
-- MySQL Workbench (optional, for SQL scripts)
-
-### 2. Create Database
-
-```sql
-CREATE DATABASE solargrid_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE solargrid_test_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### 3. Install & Configure
-
-```bash
+```powershell
+net start MYSQL80                                    # Start MySQL (Admin PowerShell)
 cd solargrid
-python -m venv venv
-venv\Scripts\activate        # Windows
+python -m venv venv && .\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env       # Edit DATABASE_URL and SECRET_KEY
-```
+copy .env.example .env                               # Edit SECRET_KEY if you like
 
-### 4. Initialize Database
+$env:MYSQL_ROOT_PASSWORD="your-root-password"
+python scripts/setup_database.py                     # Create DB + user
 
-```bash
-set FLASK_APP=run.py
-flask db init
-flask db migrate -m "Initial schema"
+$env:FLASK_APP="run.py"
 flask db upgrade
 python scripts/seed_database.py
-```
-
-### 5. Run
-
-```bash
 python run.py
 ```
 
-Open http://localhost:5000
+Open http://localhost:5000 → **Sign in** with `admin` / `SolarGrid2026!`
 
-### 6. Start MySQL locally
-
-Open PowerShell as Administrator:
-
-```powershell
-net start MYSQL80
-```
-
-Then apply SQL layers (views, procedures, indexes):
-
-```powershell
-mysql -u root -p solargrid_db < database\indexes.sql
-mysql -u root -p solargrid_db < database\views.sql
-mysql -u root -p solargrid_db < database\procedures.sql
-```
-
-### Development Credentials (after seeding)
-
-| Username | Role | Password |
-|----------|------|----------|
-| admin | Administrator | SolarGrid2026! |
-| salesrep | Sales Rep | SolarGrid2026! |
-| opsmgr | Operations Manager | SolarGrid2026! |
-| finance | Finance Officer | SolarGrid2026! |
-| auditor | Auditor | SolarGrid2026! |
-
-**Do not use these passwords in production.**
+See [docs/quick-start.md](docs/quick-start.md) for Mac/Linux, troubleshooting, SQL scripts, and all demo login accounts.
 
 ## Project Structure
 
@@ -114,6 +68,9 @@ Requires `solargrid_test_db` MySQL database (see `.env.example` TEST_DATABASE_UR
 
 ## Documentation
 
+- [Beginner Setup (from zero)](docs/beginner-setup.md)
+- [Local Quick Start](docs/quick-start.md)
+- [Team Task Checklists (by role)](docs/team-tasks.md)
 - [Technical Report (IT212 submission)](docs/technical-report.md)
 - [Submission Checklist](docs/submission-checklist.md)
 - [Requirements](docs/requirements.md)
